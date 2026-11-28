@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":58,"first_ordinal":98123,"entries":[
-{"s":"MOUNTAIN MAN SAND GRAVEL","n":[["Mountain Man Sand & Gravel LLC",1],["Mountain Man Sand & Gravel LLC.",1],["Mountain Man Sand & Gravel, LLC",1]],"x":{"sbs":{"r":1,"i":["14612"],"z":["11768"],"p":["WBE"]},"dol":{"r":1,"i":["25-644A5-CR"],"z":["11743"]},"sca":{"r":1,"i":["MOUNTAIN MAN SAND & GRAVEL LLC."],"z":["11746"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":58,"first_ordinal":98124,"entries":[
 {"s":"MOUNTAIN MEADOWS FOUNDATION","n":[["MOUNTAIN MEADOWS FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["261471688"],"z":["12484"]}}},
 {"s":"MOUNTAIN OF FIRE AND MIRACLES MINISTRIES","n":[["MOUNTAIN OF FIRE AND MIRACLES MINISTRIES",1]],"x":{"irs":{"r":1,"i":["113341649"],"z":["11212"]}}},
 {"s":"MOUNTAIN OF FIRE AND MIRACLES MINISTRIES ARK OF SAFETY","n":[["MOUNTAIN OF FIRE AND MIRACLES MINISTRIES ARK OF SAFETY",1]],"x":{"irs":{"r":1,"i":["464818178"],"z":["11236"]}}},
@@ -1740,5 +1739,7 @@
 {"s":"NASSAU BOCES EDUCATIONAL FOUNDATION","n":[["NASSAU BOCES EDUCATIONAL FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["870776465"],"z":["11756"]}}},
 {"s":"NASSAU BOWMEN ARCHERS","n":[["NASSAU BOWMEN ARCHERS INC",1]],"x":{"irs":{"r":1,"i":["852985541"],"z":["11001"]}}},
 {"s":"NASSAU CANINE WELLNESS FOUNDATION","n":[["NASSAU CANINE WELLNESS FOUNDATION",1]],"x":{"irs":{"r":1,"i":["413480025"],"z":["11791"]}}},
-{"s":"NASSAU CEMETERY ASSOCIATION","n":[["NASSAU CEMETERY ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["111808226"],"z":["11050"]}}}
+{"s":"NASSAU CEMETERY ASSOCIATION","n":[["NASSAU CEMETERY ASSOCIATION",1]],"x":{"irs":{"r":1,"i":["111808226"],"z":["11050"]}}},
+{"s":"NASSAU CENTER RESIDENTIAL DEVELOPMENT","n":[["NASSAU CENTER RESIDENTIAL DEVELOPMENT CORP",1]],"x":{"irs":{"r":1,"i":["112524108"],"z":["11797"]}}},
+{"s":"NASSAU CEREBRAL PALSY GUARDIANSHIP","n":[["NASSAU CEREBRAL PALSY GUARDIANSHIP CORP",1]],"x":{"irs":{"r":1,"i":["113134256"],"z":["11575"]}}}
 ]}

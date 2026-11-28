@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":86,"first_ordinal":145010,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":86,"first_ordinal":145010,"entries":[
 {"s":"THOMAS M BRENNAN","n":[["THOMAS M. BRENNAN, INC.",1]],"x":{"dol":{"r":1,"i":["25-64QR9-CR"],"z":["10509"]}}},
 {"s":"THOMAS M BRENNAN MEMORIAL FOUNDATION","n":[["THOMAS M BRENNAN MEMORIAL FOUNDATION",1]],"x":{"irs":{"r":1,"i":["200106661"],"z":["10552"]}}},
 {"s":"THOMAS M ESTHER C FLANAGAN CHARITABLE FOUNDATION","n":[["THOMAS M & ESTHER C FLANAGAN CHARITABLE FOUNDATION",1]],"x":{"irs":{"r":1,"i":["166043564"],"z":["13815"]}}},

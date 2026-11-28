@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":92,"first_ordinal":155035,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":92,"first_ordinal":155035,"entries":[
 {"s":"WEBSTER AVENUE SUPPORTIVE HOUSING DEVELOPMENT FUND","n":[["WEBSTER AVENUE SUPPORTIVE HOUSING DEVELOPMENT FUND CORPORATION",1]],"x":{"irs":{"r":1,"i":["472428776"],"z":["10018"]}}},
 {"s":"WEBSTER BAPTIST CHURCH","n":[["WEBSTER BAPTIST CHURCH",1]],"x":{"irs":{"r":1,"i":["161016921"],"z":["14580"]}}},
 {"s":"WEBSTER BIBLE CHURCH","n":[["WEBSTER BIBLE CHURCH",1]],"x":{"irs":{"r":1,"i":["160991357"],"z":["14580"]}}},

@@ -1,6 +1,6 @@
 {
   "schema": "cityscroll.source_vintage_observations.v1",
-  "generated_at": "2026-11-27T13:53:11.670Z",
+  "generated_at": "2026-11-28T16:21:32.266Z",
   "contract_count": 76,
   "observations": [
     {
@@ -329,7 +329,7 @@
       "publisher_last_update_basis": null,
       "cityscroll_retrieval": {
         "status": "succeeded",
-        "retrieved_at": "2026-11-27T13:09:25.421Z",
+        "retrieved_at": "2026-11-28T15:52:28.007Z",
         "receipt_ref": null,
         "receipt_schema": "cityscroll.source_acquisition_receipt.v1",
         "run_id": "warehouse/receipts/proof/checkbook_contracts_population_latest.json"

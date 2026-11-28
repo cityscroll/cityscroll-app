@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":1,"first_ordinal":1785,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":1,"first_ordinal":1785,"entries":[
 {"s":"A AND G EARLY CHILD CARE COMMUNITY NETWORK","n":[["A and G Early Child Care Community Network, Inc.",2]],"x":{"ocp":{"r":2,"a":3612500,"l":"2016-12-06","i":["20161129009","20151208006"]}}},
 {"s":"A AND J CONSTRUCTION","n":[["A  and  J CONSTRUCTION OF NY, INC.",1]],"x":{"ocp":{"r":1,"a":244875,"l":"2012-07-06","i":["20120629039"]}}},
 {"s":"A AND J SERENITY FUND","n":[["A AND J SERENITY FUND INC",1]],"x":{"irs":{"r":1,"i":["352627862"],"z":["10128"]}}},

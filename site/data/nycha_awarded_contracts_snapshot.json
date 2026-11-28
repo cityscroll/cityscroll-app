@@ -1,8 +1,8 @@
 {
   "schema": "cityscroll.nycha_awarded_contracts_snapshot.v1",
   "schema_version": 1,
-  "as_of": "2026-11-27",
-  "generated_at": "2026-11-27T13:33:10.404Z",
+  "as_of": "2026-11-28",
+  "generated_at": "2026-11-28T16:12:23.818Z",
   "source": {
     "id": "nycha_awarded_contracts",
     "name": "NYCHA Awarded Contracts",
@@ -16,8 +16,8 @@
   },
   "feed": {
     "state": "live",
-    "fetched_at": "2026-11-27T13:33:10.404Z",
-    "checked_at": "2026-11-27T13:33:10.404Z",
+    "fetched_at": "2026-11-28T16:12:23.818Z",
+    "checked_at": "2026-11-28T16:12:23.818Z",
     "fallback_reason": null,
     "fallback_text": null,
     "shape_problems": [],
@@ -25,39 +25,39 @@
       {
         "year": 2023,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2023",
-        "fetched_at": "2026-11-27T13:33:10.404Z",
-        "bytes": 513984,
-        "sha256": "16568dba24999d2516853a84d8554c634d1a78d5efcb463d4ac8ab7fe48d076e",
+        "fetched_at": "2026-11-28T16:12:23.818Z",
+        "bytes": 513982,
+        "sha256": "6e5d84d33c6ef70a041e8215376f30f9ae3bb3956bbd930af948b348b2bfc37e",
         "row_count": 657
       },
       {
         "year": 2024,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2024",
-        "fetched_at": "2026-11-27T13:33:10.404Z",
-        "bytes": 319856,
-        "sha256": "95b6968081327e5ba924bf202e7fca666ab6ea7944899b1c8d6c49dfa5a8254d",
+        "fetched_at": "2026-11-28T16:12:23.818Z",
+        "bytes": 319852,
+        "sha256": "e02802c531d340f70a7b8841efe76dc8655f3182da358f84acaab95ae9ef524e",
         "row_count": 400
       },
       {
         "year": 2025,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2025",
-        "fetched_at": "2026-11-27T13:33:10.404Z",
-        "bytes": 274558,
-        "sha256": "b1a2f731f48802f97dfe913825112a594eb885e7d0c18d96c36433946e7a9014",
+        "fetched_at": "2026-11-28T16:12:23.818Z",
+        "bytes": 274555,
+        "sha256": "9c13048d039d15a9533f2422e37083aa173d1e8851a8d77d18f714949ed278ce",
         "row_count": 353
       },
       {
         "year": 2026,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2026",
-        "fetched_at": "2026-11-27T13:33:10.404Z",
-        "bytes": 231649,
-        "sha256": "47f43b77f939c62d324e71eb92d26ace1c0525e6fc76bfa40b9e996a4d6852ec",
-        "row_count": 299
+        "fetched_at": "2026-11-28T16:12:23.818Z",
+        "bytes": 232407,
+        "sha256": "b52b2303cc1171c92958eff14bc38e46533c1fde5f1db72c1c3e5849e1955f45",
+        "row_count": 300
       },
       {
         "year": 2027,
         "url": "https://my.nycha.info/PublicSite/Transparency/GetAwardedContracts?ContractYear=2027",
-        "fetched_at": "2026-11-27T13:33:10.404Z",
+        "fetched_at": "2026-11-28T16:12:23.818Z",
         "bytes": 888,
         "sha256": "3b38eba728cd2fd719fb6d26c54a39fad25990275705955f570e5c6ba5fe5025",
         "row_count": 1
@@ -67,8 +67,8 @@
   "window": {
     "contract_years_from": 2023
   },
-  "count": 1710,
-  "rfq_numbered_count": 848,
+  "count": 1711,
+  "rfq_numbered_count": 849,
   "rows": [
     {
       "contract_number": "2219909",
@@ -10481,11 +10481,11 @@
       "rfq_number_printed": "469034-2",
       "rfq_number": "469034",
       "vendor_name": "SLSCO, LP",
-      "total_amount": 33174924,
+      "total_amount": 33527724,
       "start_date": "2024-09-25",
       "contract_year": 2024,
       "procurement_method": "SEALED BID",
-      "contract_status": "Expired"
+      "contract_status": "Active"
     },
     {
       "contract_number": "2435339",
@@ -18845,6 +18845,17 @@
       "start_date": "2026-11-25",
       "contract_year": 2026,
       "procurement_method": "COMPETETIVE RFP",
+      "contract_status": "Active"
+    },
+    {
+      "contract_number": "2607429",
+      "rfq_number_printed": "515848",
+      "rfq_number": "515848",
+      "vendor_name": "SATGUR CONSTRUCTION, INC.",
+      "total_amount": 1401909.72,
+      "start_date": "2026-11-30",
+      "contract_year": 2026,
+      "procurement_method": "SEALED BID",
       "contract_status": "Active"
     },
     {

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":14,"first_ordinal":23320,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":14,"first_ordinal":23320,"entries":[
 {"s":"C2 TECHNOLOGIES","n":[["C2 Technologies Inc",7],["C2 Technologies, Inc.",2],["C2 TECHNOLOGIES INC.",1]],"x":{"ocp":{"r":5,"a":2090116.37,"l":"2025-04-28","i":["20250422008","20240117106","20220519107","20201123106","20171016009"]},"cbr":{"r":1,"a":385000,"l":"2025-04-21","i":["MMA101720258805975"],"m":["Non-M/WBE"]},"ppt":{"r":3,"a":1294938.08,"l":"2025-04-21","i":["MMA1-017-20258805975","CT1-057-20248804625","MMA1-017-20228805573"]},"dbe":{"r":1,"i":["C2 TECHNOLOGIES INC."]}}},
 {"s":"C21","n":[["C21",1]],"x":{"irs":{"r":1,"i":["990447984"],"z":["11238"]}}},
 {"s":"C3 BROOKLYN","n":[["C3 BROOKLYN INC",1]],"x":{"irs":{"r":1,"i":["473544666"],"z":["10019"]}}},

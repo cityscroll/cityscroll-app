@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.upcoming_council_meetings.v1",
   "schema_version": 1,
-  "generated_at": "2026-11-24T18:54:11.915Z",
+  "generated_at": "2026-11-28T16:21:16.124Z",
   "source": {
     "name": "NYC Council Legistar (authenticated Web API)",
     "dataset": "Events",
@@ -15,43 +15,89 @@
   "discovery": {
     "basis": "shared authenticated Events acquisition of the daily refresh (no additional Events request)",
     "horizon_days": 120,
-    "window_start": "2026-11-24",
-    "window_end": "2027-03-24",
+    "window_start": "2026-11-28",
+    "window_end": "2027-03-28",
     "events_pages": 2,
     "events_page_truncated": false,
     "item_events_max": 60,
     "item_concurrency": 6,
     "agenda_items_per_event_max": 20,
     "item_events_attempted": 60,
-    "item_events_deferred": 0,
-    "item_discovery_truncated": false
+    "item_events_deferred": 3,
+    "item_discovery_truncated": true
   },
   "source_health": {
     "status": "healthy",
     "basis": "authenticated-events-acquisition",
-    "observed_at": "2026-11-24T18:54:11.915Z",
-    "events_observed": 399,
-    "last_successful_observation": "2026-11-24T18:54:11.915Z",
-    "upcoming": 60,
-    "standalone": 60,
+    "observed_at": "2026-11-28T16:21:16.124Z",
+    "events_observed": 397,
+    "last_successful_observation": "2026-11-28T16:21:16.124Z",
+    "upcoming": 63,
+    "standalone": 63,
     "exactly_joined": 0,
     "collection_suppressed": 0,
-    "truncated": 0
+    "truncated": 3
   },
   "counts": {
-    "eligible_events": 60,
-    "meetings": 60,
-    "agenda_items": 138,
-    "agenda_items_observed": 138,
+    "eligible_events": 63,
+    "meetings": 63,
+    "agenda_items": 133,
+    "agenda_items_observed": 133,
     "events_with_items": 59,
     "events_no_published_items": 1,
-    "events_items_deferred": 0,
+    "events_items_deferred": 3,
     "events_items_unavailable": 0,
     "events_items_truncated": 0,
-    "standalone": 60,
+    "standalone": 63,
     "exactly_joined": 0
   },
   "meetings": [
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22875",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22875",
+        "event_guid": "94FEE00E-54E5-45A7-BED8-71F0A4FB243D"
+      },
+      "governing_body": {
+        "name": "City Council",
+        "body_id": "1"
+      },
+      "date": "2027-03-25",
+      "wall_time": "2027-03-25T13:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "Council Chambers - City Hall"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22875&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2027/3/22875_A_City_Council_27-03-25_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "not_fetched",
+        "items": [],
+        "observed_items": 0,
+        "published_items": 0,
+        "search_text": null
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-28T16:21:16.124Z",
+        "row_version": "AAAAAOhaCUw=",
+        "last_modified_utc": "2026-11-11T16:37:18.277",
+        "agenda_last_published_utc": "2026-11-11T16:37:18.23"
+      }
+    },
     {
       "meeting_id": "meeting:nyc_legistar_events:22874",
       "identity": {
@@ -79,23 +125,11 @@
         }
       ],
       "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "444244",
-            "agenda_number": null,
-            "title": "Agenda - 1:30 p.m.",
-            "body_text": null,
-            "matter": null,
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "observed_items": 1,
-        "published_items": 1,
-        "search_text": "Agenda - 1:30 p.m."
+        "status": "not_fetched",
+        "items": [],
+        "observed_items": 0,
+        "published_items": 0,
+        "search_text": null
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -104,7 +138,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaCR0=",
         "last_modified_utc": "2026-11-11T16:36:32.243",
         "agenda_last_published_utc": "2026-11-11T16:36:32.193"
@@ -137,23 +171,11 @@
         }
       ],
       "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "444243",
-            "agenda_number": null,
-            "title": "Agenda - 1:30 p.m.",
-            "body_text": null,
-            "matter": null,
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "observed_items": 1,
-        "published_items": 1,
-        "search_text": "Agenda - 1:30 p.m."
+        "status": "not_fetched",
+        "items": [],
+        "observed_items": 0,
+        "published_items": 0,
+        "search_text": null
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -162,7 +184,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaCOE=",
         "last_modified_utc": "2026-11-11T16:34:37.54",
         "agenda_last_published_utc": "2026-11-11T16:34:37.477"
@@ -243,7 +265,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOha+rM=",
         "last_modified_utc": "2026-11-17T15:40:12.917",
         "agenda_last_published_utc": "2026-11-17T15:40:12.747"
@@ -301,7 +323,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaCLI=",
         "last_modified_utc": "2026-11-11T16:33:35.76",
         "agenda_last_published_utc": "2026-11-11T16:33:35.667"
@@ -359,10 +381,126 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaCIM=",
         "last_modified_utc": "2026-11-11T16:32:42.32",
         "agenda_last_published_utc": "2026-11-11T16:32:42.257"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22914",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22914",
+        "event_guid": "E9348449-4404-467A-ABD2-55766A2150FE"
+      },
+      "governing_body": {
+        "name": "Committee on Land Use",
+        "body_id": "17"
+      },
+      "date": "2027-01-20",
+      "wall_time": "2027-01-20T12:00:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22914&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2027/1/22914_A_Committee_on_Land_Use_27-01-20_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444859",
+            "agenda_number": null,
+            "title": "See Land Use Calendar",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "See Land Use Calendar"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-28T16:21:16.124Z",
+        "row_version": "AAAAAOhdbg4=",
+        "last_modified_utc": "2026-11-25T21:01:50.173",
+        "agenda_last_published_utc": "2026-11-25T21:01:50.127"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22915",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22915",
+        "event_guid": "A6B42FC7-CD61-444F-BB17-ECD08BE2AE32"
+      },
+      "governing_body": {
+        "name": "Subcommittee on Zoning and Franchises",
+        "body_id": "34"
+      },
+      "date": "2027-01-20",
+      "wall_time": "2027-01-20T11:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22915&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2027/1/22915_A_Subcommittee_on_Zoning_and_Franchises_27-01-20_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444860",
+            "agenda_number": null,
+            "title": "See Land Use Calendar",
+            "body_text": null,
+            "matter": null,
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "See Land Use Calendar"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-28T16:21:16.124Z",
+        "row_version": "AAAAAOhdbes=",
+        "last_modified_utc": "2026-11-25T21:01:22.167",
+        "agenda_last_published_utc": "2026-11-25T21:01:22.057"
       }
     },
     {
@@ -423,7 +561,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcEeU=",
         "last_modified_utc": "2026-11-19T20:15:35.98",
         "agenda_last_published_utc": "2026-11-19T20:15:35.927"
@@ -481,7 +619,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhYlP8=",
         "last_modified_utc": "2026-11-02T15:53:20.353",
         "agenda_last_published_utc": "2026-11-02T15:53:20.2"
@@ -539,7 +677,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaB+g=",
         "last_modified_utc": "2026-11-11T16:20:58.727",
         "agenda_last_published_utc": "2026-11-11T16:20:58.573"
@@ -597,7 +735,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOg7rKU=",
         "last_modified_utc": "2026-06-01T17:28:30.67",
         "agenda_last_published_utc": "2026-06-01T17:28:30.657"
@@ -661,7 +799,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOha2N0=",
         "last_modified_utc": "2026-11-16T19:51:45.71",
         "agenda_last_published_utc": "2026-11-16T19:51:45.55"
@@ -759,7 +897,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOha/kI=",
         "last_modified_utc": "2026-11-17T16:22:37.783",
         "agenda_last_published_utc": "2026-11-17T16:22:37.737"
@@ -823,7 +961,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhY3dQ=",
         "last_modified_utc": "2026-11-05T14:31:16.23",
         "agenda_last_published_utc": "2026-11-05T14:31:16.073"
@@ -887,7 +1025,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhZFz0=",
         "last_modified_utc": "2026-11-06T16:20:45.217",
         "agenda_last_published_utc": "2026-11-06T16:20:45.087"
@@ -927,7 +1065,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhZ04M=",
         "last_modified_utc": "2026-11-10T19:02:13.97",
         "agenda_last_published_utc": "2026-11-10T19:01:11.54"
@@ -985,7 +1123,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhccGA=",
         "last_modified_utc": "2026-11-20T17:15:45.407",
         "agenda_last_published_utc": "2026-11-20T17:15:45.377"
@@ -1043,7 +1181,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhccEo=",
         "last_modified_utc": "2026-11-20T17:15:22.353",
         "agenda_last_published_utc": "2026-11-20T17:15:22.333"
@@ -1101,7 +1239,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhccDQ=",
         "last_modified_utc": "2026-11-20T17:14:45.807",
         "agenda_last_published_utc": "2026-11-20T17:14:45.66"
@@ -1210,7 +1348,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc8Vk=",
         "last_modified_utc": "2026-11-24T15:40:22.457",
         "agenda_last_published_utc": "2026-11-24T15:40:22.3"
@@ -1319,7 +1457,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc8Vo=",
         "last_modified_utc": "2026-11-24T15:40:41.643",
         "agenda_last_published_utc": "2026-11-24T15:40:41.61"
@@ -1383,7 +1521,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcj/c=",
         "last_modified_utc": "2026-11-20T20:19:36.15",
         "agenda_last_published_utc": "2026-11-20T20:19:36.093"
@@ -1458,7 +1596,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhYmGY=",
         "last_modified_utc": "2026-11-02T16:56:51.7",
         "agenda_last_published_utc": "2026-11-02T16:56:51.553"
@@ -1533,7 +1671,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhYmKw=",
         "last_modified_utc": "2026-11-02T16:57:34.15",
         "agenda_last_published_utc": "2026-11-02T16:57:34.087"
@@ -1597,7 +1735,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOha1o4=",
         "last_modified_utc": "2026-11-16T19:04:34.44",
         "agenda_last_published_utc": "2026-11-16T19:04:34.347"
@@ -1661,7 +1799,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc1mY=",
         "last_modified_utc": "2026-11-23T20:05:55.847",
         "agenda_last_published_utc": "2026-11-23T20:05:55.707"
@@ -1736,7 +1874,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhdA3Y=",
         "last_modified_utc": "2026-11-24T17:28:35.31",
         "agenda_last_published_utc": "2026-11-24T17:28:35.213"
@@ -1811,7 +1949,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhdAsg=",
         "last_modified_utc": "2026-11-24T17:27:47.79",
         "agenda_last_published_utc": "2026-11-24T17:27:47.76"
@@ -1875,7 +2013,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc1KQ=",
         "last_modified_utc": "2026-11-23T19:41:12.35",
         "agenda_last_published_utc": "2026-11-23T19:41:12.257"
@@ -1939,7 +2077,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhY3co=",
         "last_modified_utc": "2026-11-05T14:38:55.797",
         "agenda_last_published_utc": "2026-11-05T14:38:55.763"
@@ -2014,7 +2152,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhZFZU=",
         "last_modified_utc": "2026-11-06T15:48:56.497",
         "agenda_last_published_utc": "2026-11-06T15:48:56.403"
@@ -2089,7 +2227,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhZFbY=",
         "last_modified_utc": "2026-11-06T15:49:32.437",
         "agenda_last_published_utc": "2026-11-06T15:49:32.42"
@@ -2238,7 +2376,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcKFw=",
         "last_modified_utc": "2026-11-19T21:56:07.957",
         "agenda_last_published_utc": "2026-11-19T21:56:07.753"
@@ -2319,7 +2457,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhYqwc=",
         "last_modified_utc": "2026-11-02T20:02:11.367",
         "agenda_last_published_utc": "2026-11-02T20:02:11.223"
@@ -2428,7 +2566,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc6aQ=",
         "last_modified_utc": "2026-11-24T14:39:06.743",
         "agenda_last_published_utc": "2026-11-24T14:39:06.717"
@@ -2537,7 +2675,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc6WU=",
         "last_modified_utc": "2026-11-24T14:38:24.733",
         "agenda_last_published_utc": "2026-11-24T14:38:24.627"
@@ -2646,7 +2784,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc6eM=",
         "last_modified_utc": "2026-11-24T14:39:36.353",
         "agenda_last_published_utc": "2026-11-24T14:39:36.3"
@@ -2710,7 +2848,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOha1o8=",
         "last_modified_utc": "2026-11-16T19:00:58.18",
         "agenda_last_published_utc": "2026-11-16T19:00:58.067"
@@ -2785,7 +2923,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcsEo=",
         "last_modified_utc": "2026-11-23T16:06:08.31",
         "agenda_last_published_utc": "2026-11-23T16:06:08.187"
@@ -2860,7 +2998,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcsGs=",
         "last_modified_utc": "2026-11-23T16:06:38.21",
         "agenda_last_published_utc": "2026-11-23T16:06:38.17"
@@ -2969,7 +3107,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc8iU=",
         "last_modified_utc": "2026-11-24T15:46:58.783",
         "agenda_last_published_utc": "2026-11-24T15:46:58.633"
@@ -3078,7 +3216,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhc8sU=",
         "last_modified_utc": "2026-11-24T15:49:04.357",
         "agenda_last_published_utc": "2026-11-24T15:49:04.31"
@@ -3142,7 +3280,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaqdw=",
         "last_modified_utc": "2026-11-13T19:58:55.743",
         "agenda_last_published_utc": "2026-11-13T19:58:55.657"
@@ -3223,7 +3361,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhbdzI=",
         "last_modified_utc": "2026-11-18T18:55:32.1",
         "agenda_last_published_utc": "2026-11-18T18:55:32.053"
@@ -3315,7 +3453,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhbdN8=",
         "last_modified_utc": "2026-11-18T18:35:33.45",
         "agenda_last_published_utc": "2026-11-18T18:35:33.417"
@@ -3407,7 +3545,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhbdLw=",
         "last_modified_utc": "2026-11-18T18:35:04.81",
         "agenda_last_published_utc": "2026-11-18T18:35:04.73"
@@ -3465,7 +3603,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhYlRY=",
         "last_modified_utc": "2026-11-02T15:54:15.93",
         "agenda_last_published_utc": "2026-11-02T15:54:15.86"
@@ -3529,7 +3667,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaZ3s=",
         "last_modified_utc": "2026-11-12T20:29:37.31",
         "agenda_last_published_utc": "2026-11-12T20:29:37.263"
@@ -3587,7 +3725,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOg7rHY=",
         "last_modified_utc": "2026-06-01T17:27:54.433",
         "agenda_last_published_utc": "2026-06-01T17:27:54.357"
@@ -3623,14 +3761,82 @@
         "status": "items",
         "items": [
           {
-            "agenda_item_id": "444176",
+            "agenda_item_id": "444814",
             "agenda_number": null,
-            "title": "AGENDA TO BE ANNOUNCED",
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to authorizing an increase in the amount to be expended annually in eight business improvement districts",
             "body_text": null,
             "matter": {
-              "matter_id": "76954",
-              "matter_file": "T2026-0003",
-              "matter_name": "AGENDA TO BE ANNOUNCED",
+              "matter_id": "79601",
+              "matter_file": "Int 1112-2026",
+              "matter_name": "Authorizing an increase in the amount to be expended annually in eight business improvement districts.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444816",
+            "agenda_number": null,
+            "title": "West 180th Street Associates, L.P: Block 2152, Lot 11, Manhattan, Community District 12, Council District 10.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79872",
+              "matter_file": "T2026-2919",
+              "matter_name": "West 180th Street Associates, L.P: Block 2152, Lot 11, Manhattan, Community District 12, Council District 10.",
+              "matter_type": "Land Use Application",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444817",
+            "agenda_number": null,
+            "title": "Forest Preservation. HPO.FY27: Block 1312, Lot 10; Block 1525, Lot 30; Block 2121, Lots 21 and 51; Block 2122, Lot 28; Block 2144, Lot 15; Block 2145, Lot 28; Block 2146, Lot 28, Queens, Community Districts 4 and 6, Council Districts 24 and 25.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79873",
+              "matter_file": "T2026-2920",
+              "matter_name": "Forest Preservation. HPO.FY27: Block 1312, Lot 10; Block 1525, Lot 30; Block 2121, Lots 21 and 51; Block 2122, Lot 28; Block 2144, Lot 15; Block 2145, Lot 28; Block 2146, Lot 28, Queens, Community Districts 4 and 6, Council Districts 24 and 25.",
+              "matter_type": "Land Use Application",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444818",
+            "agenda_number": null,
+            "title": "Greenacre HPO Cluster HDFC.HPO.FY27: Block 2070, Lot 47; Block 2071, Lot 21; Block 1210, Lot 10; Block 5351, Lots 1 and 4; Manhattan, Community District 9; Brooklyn, Community Districts 8 and 12; Council Districts 7, 36, and 39.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79874",
+              "matter_file": "T2026-2921",
+              "matter_name": "Greenacre HPO Cluster HDFC.HPO.FY27: Block 2070, Lot 47; Block 2071, Lot 21; Block 1210, Lot 10; Block 5351, Lots 1 and 4; Manhattan, Community District 9; Brooklyn, Community Districts 8 and 12; Council Districts 7, 36, and 39.",
+              "matter_type": "Land Use Application",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444819",
+            "agenda_number": null,
+            "title": "AND SUCH OTHER BUSINESS AS MAY BE NECESSARY",
+            "body_text": null,
+            "matter": {
+              "matter_id": "76955",
+              "matter_file": "T2026-0004",
+              "matter_name": "AND SUCH OTHER BUSINESS AS MAY BE NECESSARY",
               "matter_type": "N/A",
               "matter_status": "Introduced"
             },
@@ -3640,9 +3846,9 @@
             }
           }
         ],
-        "observed_items": 1,
-        "published_items": 1,
-        "search_text": "AGENDA TO BE ANNOUNCED | T2026-0003"
+        "observed_items": 5,
+        "published_items": 5,
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to authorizing an increase in the amount to be expended annually in eight business improvement districts | Authorizing an increase in the amount to be expended annually in eight business improvement districts. | Int 1112-2026 | West 180th Street Associates, L.P: Block 2152, Lot 11, Manhattan, Community District 12, Council District 10. | T2026-2919 | Forest Preservation. HPO.FY27: Block 1312, Lot 10; Block 1525, Lot 30; Block 2121, Lots 21 and 51; Block 2122, Lot 28; Block 2144, Lot 15; Block 2145, Lot 28; Block 2146, Lot 28, Queens, Community Districts 4 and 6, Council Districts 24 and 25. | T2026-2920 | Greenacre HPO Cluster HDFC.HPO.FY27: Block 2070, Lot 47; Block 2071, Lot 21; Block 1210, Lot 10; Block 5351, Lots 1 and 4; Manhattan, Community District 9; Brooklyn, Community Districts 8 and 12; Council Districts 7, 36, and 39. | T2026-2921 | AND SUCH OTHER BUSINESS AS MAY BE NECESSARY | T2026-0004"
       },
       "city_record_notice": {
         "matched_in_window": false,
@@ -3651,10 +3857,155 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
-        "row_version": "AAAAAOhZt/o=",
-        "last_modified_utc": "2026-11-10T16:55:03.11",
-        "agenda_last_published_utc": "2026-11-10T16:55:02.597"
+        "observed_at": "2026-11-28T16:21:16.124Z",
+        "row_version": "AAAAAOhdYJc=",
+        "last_modified_utc": "2026-11-24T19:36:07.167",
+        "agenda_last_published_utc": "2026-11-24T19:36:07.1"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22910",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22910",
+        "event_guid": "8A2524CC-833C-46F2-83E8-16BAE7CEF213"
+      },
+      "governing_body": {
+        "name": "Committee on Health",
+        "body_id": "14"
+      },
+      "date": "2026-12-03",
+      "wall_time": "2026-12-03T10:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 2"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22910&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22910_A_Committee_on_Health_26-12-03_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444846",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of health and mental hygiene to make medication abortion available at no cost to a patient at all of its sexual health clinics",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79041",
+              "matter_file": "Int 0953-2026",
+              "matter_name": "Requiring the department of health and mental hygiene to make medication abortion available at no cost to a patient at all of its sexual health clinics.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 1,
+        "published_items": 1,
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of health and mental hygiene to make medication abortion available at no cost to a patient at all of its sexual health clinics | Requiring the department of health and mental hygiene to make medication abortion available at no cost to a patient at all of its sexual health clinics. | Int 0953-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-28T16:21:16.124Z",
+        "row_version": "AAAAAOhdYJg=",
+        "last_modified_utc": "2026-11-25T18:33:38.987",
+        "agenda_last_published_utc": "2026-11-25T18:33:38.767"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22913",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22913",
+        "event_guid": "100C3CEA-7D69-4AD9-B255-3CAE870D4860"
+      },
+      "governing_body": {
+        "name": "Committee on Women and Gender Equity",
+        "body_id": "5244"
+      },
+      "date": "2026-12-03",
+      "wall_time": "2026-12-03T10:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 1"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22913&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22913_A_Committee_on_Women_and_Gender_Equity_26-12-03_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444848",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to reporting on efforts to combat sexual harassment and equal employment opportunity violations at city agencies, and to repeal local law number 101 for the year 2018, relating to the climate surveys and action plans to combat sexual harassment and equal employment opportunity violations at city agencies",
+            "body_text": null,
+            "matter": {
+              "matter_id": "78712",
+              "matter_file": "Int 0884-2026",
+              "matter_name": "Reporting on efforts to combat sexual harassment and equal employment opportunity violations at city agencies, and to repeal local law number 101 for the year 2018.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444849",
+            "agenda_number": null,
+            "title": "A Local Law to amend the administrative code of the city of New York, in relation to reporting on a hotline for survivors of gender-based violence",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79536",
+              "matter_file": "Int 1079-2026",
+              "matter_name": "Reporting on a hotline for survivors of gender-based violence.",
+              "matter_type": "Introduction",
+              "matter_status": "Laid Over in Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 2,
+        "published_items": 2,
+        "search_text": "A Local Law to amend the administrative code of the city of New York, in relation to reporting on efforts to combat sexual harassment and equal employment opportunity violations at city agencies, and to repeal local law number 101 for the year 2018, relating to the climate surveys and action plans to combat sexual harassment and equal employment opportunity violations at city agencies | Reporting on efforts to combat sexual harassment and equal employment opportunity violations at city agencies, and to repeal local law number 101 for the year 2018. | Int 0884-2026 | A Local Law to amend the administrative code of the city of New York, in relation to reporting on a hotline for survivors of gender-based violence | Reporting on a hotline for survivors of gender-based violence. | Int 1079-2026"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-28T16:21:16.124Z",
+        "row_version": "AAAAAOhdbXo=",
+        "last_modified_utc": "2026-11-25T20:20:41.63",
+        "agenda_last_published_utc": "2026-11-25T20:20:41.387"
       }
     },
     {
@@ -3811,7 +4162,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcrDI=",
         "last_modified_utc": "2026-11-23T14:23:05.64",
         "agenda_last_published_utc": "2026-11-23T14:23:05.61"
@@ -3971,10 +4322,142 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcq+k=",
         "last_modified_utc": "2026-11-23T14:22:32.633",
         "agenda_last_published_utc": "2026-11-23T14:22:32.58"
+      }
+    },
+    {
+      "meeting_id": "meeting:nyc_legistar_events:22818",
+      "identity": {
+        "source_system": "nyc_legistar_events",
+        "event_id": "22818",
+        "event_guid": "66D00D40-2A5B-491E-953B-478B6613E878"
+      },
+      "governing_body": {
+        "name": "Committee on Rules, Privileges, Elections, Standards and Ethics",
+        "body_id": "5127"
+      },
+      "date": "2026-12-02",
+      "wall_time": "2026-12-02T11:30:00",
+      "time_zone": "America/New_York",
+      "venue": {
+        "address": "250 Broadway - 8th Floor - Hearing Room 3"
+      },
+      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22818&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
+      "agenda_status": "Final",
+      "documents": [
+        {
+          "url": "https://nyc.legistar1.com/nyc/meetings/2026/12/22818_A_Committee_on_Rules%2C_Privileges%2C_Elections%2C_Standards_and_Ethics_26-12-02_Committee_Agenda.pdf",
+          "name": "Agenda",
+          "category": "Agenda"
+        }
+      ],
+      "agenda": {
+        "status": "items",
+        "items": [
+          {
+            "agenda_item_id": "444850",
+            "agenda_number": null,
+            "title": "Communication from the Mayor – Submitting the name of Ms. Ligia M. Guallpa to the Council for its advice and consent regarding her appointment to the New York City Taxi and Limousine Commission, pursuant to Sections 31 and 2301 of the New York City Charter.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79830",
+              "matter_file": "M 0102-2026",
+              "matter_name": "Ligia M. Guallpa, New York City Taxi and Limousine Commission.",
+              "matter_type": "Mayor's Message",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444851",
+            "agenda_number": null,
+            "title": "Communication from the Mayor – Submitting the name of Ms. Felicia Singh to the Council for its advice and consent regarding her appointment to the New York City Taxi and Limousine Commission, pursuant to Sections 31 and 2301 of the New York City Charter.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79831",
+              "matter_file": "M 0103-2026",
+              "matter_name": "Felicia Singh, New York City Taxi and Limousine Commission.",
+              "matter_type": "Mayor's Message",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444852",
+            "agenda_number": null,
+            "title": "Communication from the Mayor – Submitting the name of Ms. Lorelei Salas to the Council for its advice and consent regarding her appointment to the New York City Taxi and Limousine Commission, pursuant to Sections 31 and 2301 of the New York City Charter.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79832",
+              "matter_file": "M 0104-2026",
+              "matter_name": "Lorelei Salas, New York City Taxi and Limousine Commission.",
+              "matter_type": "Mayor's Message",
+              "matter_status": "Committee"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444857",
+            "agenda_number": null,
+            "title": "Sara Egendorf, Council candidate for appointment to the Soil and Water Conservation District Board Pursuant to Sections 6 and 7 of the New York State Soil and Water Conservation Districts Law.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79884",
+              "matter_file": "T2026-2931",
+              "matter_name": "Sara Egendorf, Soil and Water Conservation District Board.",
+              "matter_type": "Communication",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          },
+          {
+            "agenda_item_id": "444858",
+            "agenda_number": null,
+            "title": "Damien Griffin, Council candidate for appointment to the Soil and Water Conservation District Board Pursuant to Sections 6 and 7 of the New York State Soil and Water Conservation Districts Law.",
+            "body_text": null,
+            "matter": {
+              "matter_id": "79885",
+              "matter_file": "T2026-2932",
+              "matter_name": "Damien Griffin, Soil and Water Conservation District Board.",
+              "matter_type": "Communication",
+              "matter_status": "Introduced"
+            },
+            "action": {
+              "name": null,
+              "passed_flag": null
+            }
+          }
+        ],
+        "observed_items": 5,
+        "published_items": 5,
+        "search_text": "Communication from the Mayor – Submitting the name of Ms. Ligia M. Guallpa to the Council for its advice and consent regarding her appointment to the New York City Taxi and Limousine Commission, pursuant to Sections 31 and 2301 of the New York City Charter. | Ligia M. Guallpa, New York City Taxi and Limousine Commission. | M 0102-2026 | Communication from the Mayor – Submitting the name of Ms. Felicia Singh to the Council for its advice and consent regarding her appointment to the New York City Taxi and Limousine Commission, pursuant to Sections 31 and 2301 of the New York City Charter. | Felicia Singh, New York City Taxi and Limousine Commission. | M 0103-2026 | Communication from the Mayor – Submitting the name of Ms. Lorelei Salas to the Council for its advice and consent regarding her appointment to the New York City Taxi and Limousine Commission, pursuant to Sections 31 and 2301 of the New York City Charter. | Lorelei Salas, New York City Taxi and Limousine Commission. | M 0104-2026 | Sara Egendorf, Council candidate for appointment to the Soil and Water Conservation District Board Pursuant to Sections 6 and 7 of the New York State Soil and Water Conservation Districts Law. | Sara Egendorf, Soil and Water Conservation District Board. | T2026-2931 | Damien Griffin, Council candidate for appointment to the Soil and Water Conservation District Board Pursuant to Sections 6 and 7 of the New York State Soil and Water Conservation Districts Law. | Damien Griffin, Soil and Water Conservation District Board. | T2026-2932"
+      },
+      "city_record_notice": {
+        "matched_in_window": false,
+        "request_id": null,
+        "method": null
+      },
+      "source_receipt": {
+        "source_system": "nyc_legistar_events",
+        "observed_at": "2026-11-28T16:21:16.124Z",
+        "row_version": "AAAAAOhdbVA=",
+        "last_modified_utc": "2026-11-25T20:07:52.533",
+        "agenda_last_published_utc": "2026-11-25T20:07:52.353"
       }
     },
     {
@@ -4035,7 +4518,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcDb4=",
         "last_modified_utc": "2026-11-19T19:45:16.29",
         "agenda_last_published_utc": "2026-11-19T19:45:16.213"
@@ -4167,7 +4650,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhbfzs=",
         "last_modified_utc": "2026-11-18T19:57:49.457",
         "agenda_last_published_utc": "2026-11-18T19:57:49.353"
@@ -4225,7 +4708,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaReQ=",
         "last_modified_utc": "2026-11-12T16:38:37.88",
         "agenda_last_published_utc": "2026-11-12T16:38:37.8"
@@ -4283,7 +4766,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhaRbw=",
         "last_modified_utc": "2026-11-12T16:38:09.6",
         "agenda_last_published_utc": "2026-11-12T16:38:09.43"
@@ -4375,7 +4858,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcilA=",
         "last_modified_utc": "2026-11-20T19:59:35.95",
         "agenda_last_published_utc": "2026-11-20T19:59:35.8"
@@ -4467,7 +4950,7 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcito=",
         "last_modified_utc": "2026-11-20T20:01:16.447",
         "agenda_last_published_utc": "2026-11-20T20:01:16.403"
@@ -4559,428 +5042,10 @@
       },
       "source_receipt": {
         "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
+        "observed_at": "2026-11-28T16:21:16.124Z",
         "row_version": "AAAAAOhcipE=",
         "last_modified_utc": "2026-11-20T20:00:41.147",
         "agenda_last_published_utc": "2026-11-20T20:00:41.113"
-      }
-    },
-    {
-      "meeting_id": "meeting:nyc_legistar_events:22797",
-      "identity": {
-        "source_system": "nyc_legistar_events",
-        "event_id": "22797",
-        "event_guid": "B097D53D-54AF-47B4-9081-C65268E6AF5A"
-      },
-      "governing_body": {
-        "name": "Subcommittee on Landmarks, Public Sitings, Resiliency and Dispositions",
-        "body_id": "5309"
-      },
-      "date": "2026-11-24",
-      "wall_time": "2026-11-24T12:00:00",
-      "time_zone": "America/New_York",
-      "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 3"
-      },
-      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22797&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Final",
-      "documents": [
-        {
-          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22797_A_Subcommittee_on_Landmarks%2C_Public_Sitings%2C_Resiliency_and_Dispositions_26-11-24_Committee_Agenda.pdf",
-          "name": "Agenda",
-          "category": "Agenda"
-        }
-      ],
-      "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "444684",
-            "agenda_number": null,
-            "title": "Application number C 260190 ZSX (110 East 138th Street/63 Exterior Street) submitted by the New York City Department of Housing Preservation and Development (HPD), pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 62-837 of the Zoning Resolution to modify the requirements of Section 23-432 (Height and setback requirements) and 23-433 (Standard setback regulations), the regulations of Section 87-322 (Base heights and transition heights) and 87-323 (Tower provisions), and the requirements of Section 62-332 (Rear yards and waterfront yards), in connection with the proposed development of two new mixed buildings on property located at 63 Exterior Street and 110 East 138th Street (Block 2323, Lots 28, 29, and 43), in an R7-2/C2-4 District, within the Special Harlem River Waterfront District (Core Subdistrict), Borough of the Bronx, Community District 1, Council District 8.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79800",
-              "matter_file": "LU 0161-2026",
-              "matter_name": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260190 ZSX).",
-              "matter_type": "Land Use Application",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444685",
-            "agenda_number": null,
-            "title": "Application number C 260193 HAX (110 East 138th Street/63 Exterior Street) submitted by the New York City Department of Housing Preservation and Development (HPD), pursuant to Article 16 of the General Municipal Law of New York State for the designation of an Urban Development Action Area and an Urban Development Action Area Project, for property located at 63 Exterior Street (Block 2323, Lots 28 and 29) and 110 East 138th Street (Block 2323, Lot 43), and pursuant to Section 197-c of the New York City Charter for the disposition of such property to a developer to be selected by HPD, for property located at 63 Exterior Street (Block 2323, Lots 28 and 29), Borough of the Bronx, Community District 1, Council District 8.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79802",
-              "matter_file": "LU 0162-2026",
-              "matter_name": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260193 HAX).",
-              "matter_type": "Land Use Application",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444686",
-            "agenda_number": null,
-            "title": "Application number N 260336 ZAX (110 East 138th Street/63 Exterior Street) submitted by NYC Department of Housing Preservation and Development and East 138th Street JV Associates LLC for the grant of an authorization pursuant to Section 62-822(a) to modify the requirements of 62-50 (General Requirements for Visual Corridors and Waterfront Public Access Areas) of the Zoning Resolution to allow for the Waterfront Public Access Area to be accessible from a direct connection or upland connection along the shore public walkway at an interval that is greater than 600 feet, to facilitate the development of two new mixed buildings on property located at 63 Exterior Street and 110 East 138th Street (Block 2323, Lots 28, 29 & 43), in an R7-2/C2-4 District, within the Special Harlem River Waterfront District (Core Subdistrict), Borough of the Bronx, Community District 1.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79803",
-              "matter_file": "LU 0163-2026",
-              "matter_name": "Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (N 260336 ZAX).",
-              "matter_type": "Land Use Application",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444687",
-            "agenda_number": null,
-            "title": "Application number G 260008 SCQ (New, Approximately 972-Seat Intermediate School) pursuant to Section 1732 of the New York School Authority Act, concerning the proposed site selection for a new, approximately 972-seat intermediate school facility, located at 43-58 11th Street (Block 453, Lot 1), Borough of Queens, Community District 2, Council District 26, Community School District 30.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79805",
-              "matter_file": "LU 0164-2026",
-              "matter_name": "Landmarks, New, Approximately 972-Seat Intermediate School, Queens (G 260008 SCQ).",
-              "matter_type": "Land Use Application",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444688",
-            "agenda_number": null,
-            "title": "Application number G 260009 SCQ (New, Approximately 676-Seat High School With District 75 Program) pursuant to Section 1732 of the New York School Authority Act, concerning the proposed site selection for a new, approximately 676-seat high school facility, located at 47-51 33rd Street (Block 251, Lot 1), Borough of Queens, Community District 2, Council District 26, Community School District 24.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79806",
-              "matter_file": "LU 0165-2026",
-              "matter_name": "Landmarks, New, Approximately 676-Seat High School With District 75 Program, Queens (G 260009 SCQ).",
-              "matter_type": "Land Use Application",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "observed_items": 5,
-        "published_items": 5,
-        "search_text": "Application number C 260190 ZSX (110 East 138th Street/63 Exterior Street) submitted by the New York City Department of Housing Preservation and Development (HPD), pursuant to Sections 197-c and 201 of the New York City Charter for the grant of a special permit pursuant to Section 62-837 of the Zoning Resolution to modify the requirements of Section 23-432 (Height and setback requirements) and 23-433 (Standard setback regulations), the regulations of Section 87-322 (Base heights and transition heights) and 87-323 (Tower provisions), and the requirements of Section 62-332 (Rear yards and waterfront yards), in connection with the proposed development of two new mixed buildings on property located at 63 Exterior Street and 110 East 138th Street (Block 2323, Lots 28, 29, and 43), in an R7-2/C2-4 District, within the Special Harlem River Waterfront District (Core Subdistrict), Borough of the Bronx, Community District 1, Council District 8. | Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260190 ZSX). | LU 0161-2026 | Application number C 260193 HAX (110 East 138th Street/63 Exterior Street) submitted by the New York City Department of Housing Preservation and Development (HPD), pursuant to Article 16 of the General Municipal Law of New York State for the designation of an Urban Development Action Area and an Urban Development Action Area Project, for property located at 63 Exterior Street (Block 2323, Lots 28 and 29) and 110 East 138th Street (Block 2323, Lot 43), and pursuant to Section 197-c of the New York City Charter for the disposition of such property to a developer to be selected by HPD, for property located at 63 Exterior Street (Block 2323, Lots 28 and 29), Borough of the Bronx, Community District 1, Council District 8. | Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (C 260193 HAX). | LU 0162-2026 | Application number N 260336 ZAX (110 East 138th Street/63 Exterior Street) submitted by NYC Department of Housing Preservation and Development and East 138th Street JV Associates LLC for the grant of an authorization pursuant to Section 62-822(a) to modify the requirements of 62-50 (General Requirements for Visual Corridors and Waterfront Public Access Areas) of the Zoning Resolution to allow for the Waterfront Public Access Area to be accessible from a direct connection or upland connection along the shore public walkway at an interval that is greater than 600 feet, to facilitate the development of two new mixed buildings on property located at 63 Exterior Street and 110 East 138th Street (Block 2323, Lots 28, 29 & 43), in an R7-2/C2-4 District, within the Special Harlem River Waterfront District (Core Subdistrict), Borough of the Bronx, Community District 1. | Landmarks, 110 East 138th Street/63 Exterior Street, Bronx (N 260336 ZAX). | LU 0163-2026 | Application number G 260008 SCQ (New, Approximately 972-Seat Intermediate School) pursuant to Section 1732 of the New York School Authority Act, concerning the proposed site selection for a new, approximately 972-seat intermediate school facility, located at 43-58 11th Street (Block 453, Lot 1), Borough of Queens, Community District 2, Council District 26, Community School District 30. | Landmarks, New, Approximately 972-Seat Intermediate School, Queens (G 260008 SCQ). | LU 0164-2026 | Application number G 260009 SCQ (New, Approximately 676-Seat High School With District 75 Program) pursuant to Section 1732 of the New York School Authority Act, concerning the proposed site selection for a new, approximately 676-seat high school facility, located at 47-51 33rd Street (Block 251, Lot 1), Borough of Queens, Community District 2, Council District 26, Community School District 24. | Landmarks, New, Approximately 676-Seat High School With District 75 Program, Queens (G 260009 SCQ). | LU 0165-2026"
-      },
-      "city_record_notice": {
-        "matched_in_window": false,
-        "request_id": null,
-        "method": null
-      },
-      "source_receipt": {
-        "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
-        "row_version": "AAAAAOhdBfM=",
-        "last_modified_utc": "2026-11-24T18:07:07.417",
-        "agenda_last_published_utc": "2026-11-19T19:25:29.547"
-      }
-    },
-    {
-      "meeting_id": "meeting:nyc_legistar_events:22829",
-      "identity": {
-        "source_system": "nyc_legistar_events",
-        "event_id": "22829",
-        "event_guid": "851C4160-798B-46F6-96B2-6CFF6CFFDBBD"
-      },
-      "governing_body": {
-        "name": "Committee on Disabilities",
-        "body_id": "5312"
-      },
-      "date": "2026-11-24",
-      "wall_time": "2026-11-24T10:00:00",
-      "time_zone": "America/New_York",
-      "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
-      },
-      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22829&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Final",
-      "documents": [
-        {
-          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22829_A_Committee_on_Disabilities_26-11-24_Committee_Agenda.pdf",
-          "name": "Agenda",
-          "category": "Agenda"
-        }
-      ],
-      "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "443823",
-            "agenda_number": null,
-            "title": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79701",
-              "matter_file": "T2026-2748",
-              "matter_name": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers.",
-              "matter_type": "Oversight",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443824",
-            "agenda_number": null,
-            "title": "Jointly with the Committee on Parks and Recreation",
-            "body_text": null,
-            "matter": null,
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443934",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to an annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York",
-            "body_text": null,
-            "matter": {
-              "matter_id": "77123",
-              "matter_file": "Int 0212-2026",
-              "matter_name": "An annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444340",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79743",
-              "matter_file": "Int 1177-2026",
-              "matter_name": "Requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444381",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to increasing the availability of accessible swings in playgrounds",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79801",
-              "matter_file": "Int 1193-2026",
-              "matter_name": "Increasing the availability of accessible swings in playgrounds.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444569",
-            "agenda_number": null,
-            "title": "Resolution honoring the life, legacy, and enduring contributions of Becky Ogle to the disability rights movement and the advancement of accessibility, inclusion, and equal opportunity in the City of New York",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79715",
-              "matter_file": "Res 0721-2026",
-              "matter_name": "Honoring the life, legacy, and enduring contributions of Becky Ogle.",
-              "matter_type": "Resolution",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "observed_items": 6,
-        "published_items": 6,
-        "search_text": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers. | T2026-2748 | Jointly with the Committee on Parks and Recreation | A Local Law to amend the administrative code of the city of New York, in relation to an annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York | An annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York. | Int 0212-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities | Requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities. | Int 1177-2026 | A Local Law to amend the administrative code of the city of New York, in relation to increasing the availability of accessible swings in playgrounds | Increasing the availability of accessible swings in playgrounds. | Int 1193-2026 | Resolution honoring the life, legacy, and enduring contributions of Becky Ogle to the disability rights movement and the advancement of accessibility, inclusion, and equal opportunity in the City of New York | Honoring the life, legacy, and enduring contributions of Becky Ogle. | Res 0721-2026"
-      },
-      "city_record_notice": {
-        "matched_in_window": false,
-        "request_id": null,
-        "method": null
-      },
-      "source_receipt": {
-        "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
-        "row_version": "AAAAAOhc8Nw=",
-        "last_modified_utc": "2026-11-24T15:22:04.093",
-        "agenda_last_published_utc": "2026-11-23T16:33:44.81"
-      }
-    },
-    {
-      "meeting_id": "meeting:nyc_legistar_events:22830",
-      "identity": {
-        "source_system": "nyc_legistar_events",
-        "event_id": "22830",
-        "event_guid": "8A18C867-F3D9-4159-BF9C-3888AE216116"
-      },
-      "governing_body": {
-        "name": "Committee on Parks and Recreation",
-        "body_id": "5106"
-      },
-      "date": "2026-11-24",
-      "wall_time": "2026-11-24T10:00:00",
-      "time_zone": "America/New_York",
-      "venue": {
-        "address": "250 Broadway - 8th Floor - Hearing Room 1"
-      },
-      "url": "https://nyc.legistar.com/MeetingDetail.aspx?LEGID=22830&GID=61&G=2FD004F1-D85B-4588-A648-0A736C77D6E3",
-      "agenda_status": "Final",
-      "documents": [
-        {
-          "url": "https://nyc.legistar1.com/nyc/meetings/2026/11/22830_A_Committee_on_Parks_and_Recreation_26-11-24_Committee_Agenda.pdf",
-          "name": "Agenda",
-          "category": "Agenda"
-        }
-      ],
-      "agenda": {
-        "status": "items",
-        "items": [
-          {
-            "agenda_item_id": "443825",
-            "agenda_number": null,
-            "title": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers.",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79702",
-              "matter_file": "T2026-2749",
-              "matter_name": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers.",
-              "matter_type": "Oversight",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443826",
-            "agenda_number": null,
-            "title": "Jointly with the Committee on Disabilities",
-            "body_text": null,
-            "matter": null,
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "443935",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to an annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York",
-            "body_text": null,
-            "matter": {
-              "matter_id": "77123",
-              "matter_file": "Int 0212-2026",
-              "matter_name": "An annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444339",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79743",
-              "matter_file": "Int 1177-2026",
-              "matter_name": "Requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444382",
-            "agenda_number": null,
-            "title": "A Local Law to amend the administrative code of the city of New York, in relation to increasing the availability of accessible swings in playgrounds",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79801",
-              "matter_file": "Int 1193-2026",
-              "matter_name": "Increasing the availability of accessible swings in playgrounds.",
-              "matter_type": "Introduction",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          },
-          {
-            "agenda_item_id": "444570",
-            "agenda_number": null,
-            "title": "Resolution honoring the life, legacy, and enduring contributions of Becky Ogle to the disability rights movement and the advancement of accessibility, inclusion, and equal opportunity in the City of New York",
-            "body_text": null,
-            "matter": {
-              "matter_id": "79715",
-              "matter_file": "Res 0721-2026",
-              "matter_name": "Honoring the life, legacy, and enduring contributions of Becky Ogle.",
-              "matter_type": "Resolution",
-              "matter_status": "Committee"
-            },
-            "action": {
-              "name": null,
-              "passed_flag": null
-            }
-          }
-        ],
-        "observed_items": 6,
-        "published_items": 6,
-        "search_text": "Oversight - Accessibility of City Parks, Playgrounds, and Recreation Centers. | T2026-2749 | Jointly with the Committee on Disabilities | A Local Law to amend the administrative code of the city of New York, in relation to an annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York | An annual report on compliance with the Americans with disabilities act standards for accessible design by the department of parks and recreation, and to repeal and replace section 18-143 of the administrative code of the city of New York. | Int 0212-2026 | A Local Law to amend the administrative code of the city of New York, in relation to requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities | Requiring the department of parks and recreation to charge senior citizens, young adults, active members of the military, veterans and their minor children and persons with disabilities reduced admission fees to recreational facilities. | Int 1177-2026 | A Local Law to amend the administrative code of the city of New York, in relation to increasing the availability of accessible swings in playgrounds | Increasing the availability of accessible swings in playgrounds. | Int 1193-2026 | Resolution honoring the life, legacy, and enduring contributions of Becky Ogle to the disability rights movement and the advancement of accessibility, inclusion, and equal opportunity in the City of New York | Honoring the life, legacy, and enduring contributions of Becky Ogle. | Res 0721-2026"
-      },
-      "city_record_notice": {
-        "matched_in_window": false,
-        "request_id": null,
-        "method": null
-      },
-      "source_receipt": {
-        "source_system": "nyc_legistar_events",
-        "observed_at": "2026-11-24T18:54:11.915Z",
-        "row_version": "AAAAAOhcssc=",
-        "last_modified_utc": "2026-11-23T16:34:09.843",
-        "agenda_last_published_utc": "2026-11-23T16:34:09.797"
       }
     }
   ]

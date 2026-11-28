@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":83,"first_ordinal":140170,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":83,"first_ordinal":140170,"entries":[
 {"s":"TEK SYSTEMS","n":[["Tek Systems Inc",5],["TEK SYSTEMS INC",1]],"x":{"ocp":{"r":5,"a":855985.06,"l":"2020-01-22","i":["20200114015","20181228002","20181214010","20181212024","20181212031"]},"cbr":{"r":1,"a":77400,"l":"2025-04-04","i":["CT181920251413096"],"m":["Non-M/WBE"]}}},
 {"s":"TEK-SALES","n":[["TEK-SALES INC",1],["TEK-SALES INC.",1]],"x":{"ocp":{"r":1,"a":2583756.51,"l":"2021-11-09","i":["20211101141"]},"dbe":{"r":1,"i":["TEK-SALES INC"]}}},
 {"s":"TEK84","n":[["Tek84 Inc",4],["Tek84 Inc.",1]],"x":{"ocp":{"r":1,"a":109170,"l":"2026-06-03","i":["20260528011"]},"cbr":{"r":1,"a":109170,"l":"2026-05-27","i":["CT107220268806239"],"m":["Non-M/WBE"]},"ppt":{"r":1,"a":109170,"l":"2026-05-27","i":["CT1-072-20268806239"]},"cbv":{"r":1,"l":"2026-05-27","i":["CT107220268806239"],"m":["Non-M/WBE"]},"dol":{"r":1,"i":["26-666US-CR"],"z":["92064"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":78,"first_ordinal":131803,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":78,"first_ordinal":131803,"entries":[
 {"s":"SNOW RATS SNOWMOBILE CLUB","n":[["SNOW RATS SNOWMOBILE CLUB INC",1]],"x":{"irs":{"r":1,"i":["208938663"],"z":["10512"]}}},
 {"s":"SNOW RIDGE SKI CLUB","n":[["SNOW RIDGE SKI CLUB INC",1]],"x":{"irs":{"r":1,"i":["332569630"],"z":["13473"]}}},
 {"s":"SNOW S TREE SERVICE","d":[["Snow's Tree Service",1]],"x":{"dol":{"r":1,"v":["dba"],"i":["25-65B5S-CR"],"z":["13833"]}}},

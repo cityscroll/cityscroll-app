@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":21,"first_ordinal":35120,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":21,"first_ordinal":35120,"entries":[
 {"s":"CONGREGATION BET SHMUEL","n":[["CONGREGATION BET SHMUEL",1]],"x":{"irs":{"r":1,"i":["464111944"],"z":["11229"]}}},
 {"s":"CONGREGATION BETH AARON","n":[["CONGREGATION BETH AARON",1]],"x":{"irs":{"r":1,"i":["113221904"],"z":["11211"]}}},
 {"s":"CONGREGATION BETH AARON OF FLATBUSH","n":[["CONGREGATION BETH AARON OF FLATBUSH",1]],"x":{"irs":{"r":1,"i":["112539314"],"z":["11230"]}}},

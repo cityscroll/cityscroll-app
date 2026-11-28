@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "kind": "depot_rederive",
-  "observed_on": "2026-11-25",
+  "observed_on": "2026-11-28",
   "class_changes": [],
   "class_changes_loud": [],
   "sources_count": 78,
@@ -1271,5 +1271,5 @@
       "realized_join_rate": null
     }
   ],
-  "registry_sha256": "bcc33f571371ad687312288edae8f4eb73c3cd458df85fe86faeef9db9ad0fc1"
+  "registry_sha256": "87eee3530dd50a38bcc0ad614a8efd90f43538141641e5946308aef9c4853269"
 }

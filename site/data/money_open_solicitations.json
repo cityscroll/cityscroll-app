@@ -2,8 +2,8 @@
   "schema": "cityscroll.money_open_solicitations.v1",
   "schema_version": 1,
   "delivery_tier": "inline-at-build",
-  "generated_at": "2026-11-27T13:33:25.585Z",
-  "open_as_of": "2026-11-27",
+  "generated_at": "2026-11-28T16:13:27.643Z",
+  "open_as_of": "2026-11-28",
   "source": {
     "name": "City Record Online",
     "dataset": "dg92-zbpx",
@@ -11,7 +11,7 @@
   },
   "query": {
     "$select": "request_id,start_date,agency_name,type_of_notice_description,category_description,short_title,pin,contract_amount,vendor_name,due_date,selection_method_description",
-    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-27'",
+    "$where": "type_of_notice_description='Solicitation' AND due_date > '2026-11-28'",
     "$order": "due_date ASC, request_id ASC",
     "$limit": "501",
     "note": "Every open solicitation (same predicate as money_default_open, without its 40-row strip limit). Contact fields stay on the notice detail read."
@@ -23,123 +23,14 @@
   "population": {
     "state": "complete",
     "reasons": [],
-    "source_count": 195,
-    "published_count": 195,
+    "source_count": 194,
+    "published_count": 194,
     "rejected_rows": 0,
     "distinct_pins": 137,
-    "rows_without_pin": 5
+    "rows_without_pin": 4
   },
-  "count": 195,
+  "count": 194,
   "notices": [
-    {
-      "request_id": "20261026031",
-      "start_date": "2026-11-04T00:00:00.000",
-      "agency_name": "Parks and Recreation",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "BG-426M Brooklyn Street Tree Planting FY27 - CBs 6, 13",
-      "pin": "84627B0014",
-      "due_date": "2026-11-27T10:30:00.000",
-      "selection_method_description": "Competitive Sealed Bids",
-      "main_commodity_category": {
-        "status": "matched",
-        "code": "135",
-        "label": "Parks and Site Work Construction",
-        "level": 3,
-        "parents": [
-          "2",
-          "19"
-        ],
-        "catalog_version": "snapshot-2026-11-11-6325fbf06b26",
-        "state": "available",
-        "reason": "joined_l3",
-        "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
-        "join": {
-          "method": "exact",
-          "epin": "84627B0014"
-        }
-      },
-      "coverage": {
-        "category": {
-          "state": "available",
-          "reason": "joined_l3",
-          "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
-        },
-        "work_site": {
-          "state": "missing",
-          "reason": "borough_only",
-          "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
-        }
-      },
-      "work_sites": [],
-      "work_site_scan": {
-        "addresses_found": 0,
-        "rejected": {
-          "bid_drop": 0,
-          "meeting": 0,
-          "agency_office": 0,
-          "unclear": 0
-        },
-        "boroughs_named": [
-          "Brooklyn"
-        ],
-        "sites_named": 0,
-        "sites_placed": 0
-      }
-    },
-    {
-      "request_id": "20261020018",
-      "start_date": "2026-10-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: SMD-Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located in Manhattan Neighborhood (MN08), and (MN09), Manhattan.",
-      "due_date": "2026-11-27T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids",
-      "main_commodity_category": {
-        "status": "not_published",
-        "state": "missing",
-        "reason": "no_pin",
-        "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
-      },
-      "coverage": {
-        "category": {
-          "state": "missing",
-          "reason": "no_pin",
-          "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
-        },
-        "work_site": {
-          "state": "missing",
-          "reason": "borough_only",
-          "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
-        }
-      },
-      "work_sites": [],
-      "work_site_scan": {
-        "addresses_found": 0,
-        "rejected": {
-          "bid_drop": 0,
-          "meeting": 0,
-          "agency_office": 0,
-          "unclear": 0
-        },
-        "boroughs_named": [
-          "Bronx",
-          "Brooklyn",
-          "Manhattan",
-          "Queens",
-          "Staten Island"
-        ],
-        "sites_named": 0,
-        "sites_placed": 0
-      }
-    },
     {
       "request_id": "20261027023",
       "start_date": "2026-11-04T00:00:00.000",
@@ -155,20 +46,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -200,20 +91,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -253,7 +144,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85727B0029"
@@ -264,13 +155,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -310,7 +201,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82626B0015"
@@ -321,13 +212,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -367,7 +258,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85727B0027"
@@ -378,13 +269,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -424,7 +315,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "80626B0039"
@@ -435,13 +326,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -493,20 +384,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -538,20 +429,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -593,7 +484,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85727B0025"
@@ -604,13 +495,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -642,20 +533,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -697,7 +588,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85027P0001"
@@ -708,13 +599,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -746,77 +637,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
-        }
-      },
-      "work_sites": [],
-      "work_site_scan": {
-        "addresses_found": 0,
-        "rejected": {
-          "bid_drop": 0,
-          "meeting": 0,
-          "agency_office": 0,
-          "unclear": 0
-        },
-        "boroughs_named": [],
-        "sites_named": 0,
-        "sites_placed": 0
-      }
-    },
-    {
-      "request_id": "20261021030",
-      "start_date": "2026-10-28T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: 85727B0004-Citywide Moving Services",
-      "pin": "85727B0004",
-      "due_date": "2026-12-03T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids",
-      "main_commodity_category": {
-        "status": "matched",
-        "code": "097",
-        "label": "Ground Transportation Services",
-        "level": 3,
-        "parents": [
-          "1",
-          "15"
-        ],
-        "catalog_version": "snapshot-2026-11-11-6325fbf06b26",
-        "state": "available",
-        "reason": "joined_l3",
-        "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
-        "join": {
-          "method": "exact",
-          "epin": "85727B0004"
-        }
-      },
-      "coverage": {
-        "category": {
-          "state": "available",
-          "reason": "joined_l3",
-          "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
-        },
-        "work_site": {
-          "state": "missing",
-          "reason": "broad_scope",
-          "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -848,20 +682,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -893,20 +727,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -940,20 +774,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -993,7 +827,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "84127P0002"
@@ -1004,13 +838,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1044,20 +878,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1097,7 +931,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "07227P0001"
@@ -1108,13 +942,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1154,7 +988,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0004"
@@ -1165,13 +999,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1211,7 +1045,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0010"
@@ -1222,13 +1056,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1271,7 +1105,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85727B0026"
@@ -1282,13 +1116,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1328,7 +1162,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85727B0003"
@@ -1339,13 +1173,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1377,20 +1211,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1432,7 +1266,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0022"
@@ -1443,13 +1277,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1481,20 +1315,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -1556,7 +1390,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85625P0004"
@@ -1567,13 +1401,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1605,20 +1439,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1650,20 +1484,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1695,20 +1529,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1748,7 +1582,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82626B0065"
@@ -1759,13 +1593,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1797,20 +1631,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1850,7 +1684,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0013"
@@ -1861,13 +1695,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1909,7 +1743,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0008"
@@ -1920,13 +1754,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -1958,20 +1792,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2003,20 +1837,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2056,7 +1890,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627P0005"
@@ -2067,13 +1901,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2113,7 +1947,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85727B0033"
@@ -2124,13 +1958,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2170,7 +2004,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "06927P0001"
@@ -2181,13 +2015,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2219,20 +2053,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2266,20 +2100,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2325,7 +2159,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85827Y1399"
@@ -2336,13 +2170,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2382,7 +2216,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0009"
@@ -2393,13 +2227,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2434,20 +2268,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2479,20 +2313,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2532,7 +2366,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85626B0001"
@@ -2543,13 +2377,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2589,7 +2423,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82626B0054"
@@ -2600,13 +2434,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "address_not_resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2653,7 +2487,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0019"
@@ -2664,13 +2498,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2702,20 +2536,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2747,20 +2581,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2792,20 +2626,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2845,7 +2679,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "84126B0028"
@@ -2856,13 +2690,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2905,7 +2739,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "84126B0029"
@@ -2916,13 +2750,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -2966,7 +2800,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85625P0005"
@@ -2977,13 +2811,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3015,20 +2849,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3062,20 +2896,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -3127,20 +2961,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -3192,20 +3026,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -3259,20 +3093,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3312,7 +3146,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0012"
@@ -3323,13 +3157,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3363,20 +3197,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3408,20 +3242,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3463,7 +3297,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82626B0055"
@@ -3474,13 +3308,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3511,20 +3345,20 @@
         "state": "missing",
         "reason": "no_pin",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "no_pin",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3557,7 +3391,7 @@
         "reason": "joined_unmatched",
         "raw_label": "Educational Services, Alternative",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627Z0004"
@@ -3568,13 +3402,13 @@
           "state": "missing",
           "reason": "joined_unmatched",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3605,20 +3439,20 @@
         "state": "missing",
         "reason": "no_pin",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "no_pin",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3650,20 +3484,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3695,20 +3529,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3748,7 +3582,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0020"
@@ -3759,13 +3593,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3805,7 +3639,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -3816,13 +3650,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3862,7 +3696,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -3873,13 +3707,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3911,20 +3745,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -3958,20 +3792,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4011,7 +3845,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0011"
@@ -4022,13 +3856,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4044,6 +3878,63 @@
           "Brooklyn",
           "Queens"
         ],
+        "sites_named": 0,
+        "sites_placed": 0
+      }
+    },
+    {
+      "request_id": "20261021030",
+      "start_date": "2026-10-28T00:00:00.000",
+      "agency_name": "Citywide Administrative Services",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Services (other than human services)",
+      "short_title": "Bid Extension: 85727B0004-Citywide Moving Services",
+      "pin": "85727B0004",
+      "due_date": "2027-01-06T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids",
+      "main_commodity_category": {
+        "status": "matched",
+        "code": "097",
+        "label": "Ground Transportation Services",
+        "level": 3,
+        "parents": [
+          "1",
+          "15"
+        ],
+        "catalog_version": "snapshot-2026-11-11-6325fbf06b26",
+        "state": "available",
+        "reason": "joined_l3",
+        "source": "passport_public_rfx",
+        "as_of": "2026-11-28",
+        "join": {
+          "method": "exact",
+          "epin": "85727B0004"
+        }
+      },
+      "coverage": {
+        "category": {
+          "state": "available",
+          "reason": "joined_l3",
+          "source": "passport_public_rfx",
+          "as_of": "2026-11-28"
+        },
+        "work_site": {
+          "state": "missing",
+          "reason": "broad_scope",
+          "source": "city_record_notice_text",
+          "as_of": "2026-11-28"
+        }
+      },
+      "work_sites": [],
+      "work_site_scan": {
+        "addresses_found": 0,
+        "rejected": {
+          "bid_drop": 0,
+          "meeting": 0,
+          "agency_office": 0,
+          "unclear": 0
+        },
+        "boroughs_named": [],
         "sites_named": 0,
         "sites_placed": 0
       }
@@ -4071,7 +3962,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "84127P0006"
@@ -4082,13 +3973,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4122,20 +4013,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -4187,20 +4078,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -4252,20 +4143,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4297,20 +4188,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4350,7 +4241,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85625B0009"
@@ -4361,13 +4252,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -4405,6 +4296,51 @@
       }
     },
     {
+      "request_id": "20261119004",
+      "start_date": "2026-11-27T00:00:00.000",
+      "agency_name": "NYC Health + Hospitals",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Construction/Construction Services",
+      "short_title": "7TH FLOOR ROOF REPLACEMENT HARLEM HOSPITAL - MLK Pavilion, New York, NY",
+      "pin": "13202511",
+      "due_date": "2027-01-13T11:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids",
+      "main_commodity_category": {
+        "status": "not_published",
+        "state": "missing",
+        "reason": "pin_not_joined",
+        "source": "passport_public_rfx",
+        "as_of": "2026-11-28"
+      },
+      "coverage": {
+        "category": {
+          "state": "missing",
+          "reason": "pin_not_joined",
+          "source": "passport_public_rfx",
+          "as_of": "2026-11-28"
+        },
+        "work_site": {
+          "state": "missing",
+          "reason": "only_bid_drop_address",
+          "source": "city_record_notice_text",
+          "as_of": "2026-11-28"
+        }
+      },
+      "work_sites": [],
+      "work_site_scan": {
+        "addresses_found": 3,
+        "rejected": {
+          "bid_drop": 1,
+          "meeting": 2,
+          "agency_office": 0,
+          "unclear": 0
+        },
+        "boroughs_named": [],
+        "sites_named": 0,
+        "sites_placed": 0
+      }
+    },
+    {
       "request_id": "20260821028",
       "start_date": "2026-08-26T00:00:00.000",
       "agency_name": "Citywide Administrative Services",
@@ -4427,7 +4363,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85626B0010"
@@ -4438,13 +4374,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -4496,20 +4432,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4549,7 +4485,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85624B0007"
@@ -4560,13 +4496,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -4626,7 +4562,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "00227P0001"
@@ -4637,13 +4573,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4683,7 +4619,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "85625B0011"
@@ -4694,13 +4630,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4735,20 +4671,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4788,7 +4724,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82627B0015"
@@ -4799,13 +4735,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4837,20 +4773,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -4890,7 +4826,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "82726B0005"
@@ -4901,13 +4837,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "available",
           "reason": "resolved",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [
@@ -4966,20 +4902,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5011,20 +4947,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5056,20 +4992,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5101,20 +5037,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5145,20 +5081,20 @@
         "state": "missing",
         "reason": "no_pin",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "no_pin",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "address_role_unclear",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5192,20 +5128,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5237,20 +5173,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5282,20 +5218,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5335,7 +5271,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -5346,13 +5282,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5392,7 +5328,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -5403,13 +5339,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5449,7 +5385,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -5460,13 +5396,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5506,7 +5442,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -5517,13 +5453,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5555,20 +5491,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5600,20 +5536,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5645,20 +5581,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5690,20 +5626,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5743,7 +5679,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -5754,13 +5690,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5800,7 +5736,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -5811,13 +5747,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5849,20 +5785,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5894,20 +5830,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5939,20 +5875,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -5984,20 +5920,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6029,20 +5965,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6074,20 +6010,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6119,20 +6055,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6164,20 +6100,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6209,20 +6145,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6254,20 +6190,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6299,20 +6235,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6344,20 +6280,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6389,20 +6325,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6434,20 +6370,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6479,20 +6415,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6524,20 +6460,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6569,20 +6505,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6614,20 +6550,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6659,20 +6595,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6704,20 +6640,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6749,20 +6685,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6794,20 +6730,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6839,20 +6775,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6884,20 +6820,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6929,20 +6865,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -6973,20 +6909,20 @@
         "state": "missing",
         "reason": "no_pin",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "no_pin",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7018,20 +6954,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7071,7 +7007,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7082,13 +7018,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7128,7 +7064,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -7139,13 +7075,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7185,7 +7121,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7196,13 +7132,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7242,7 +7178,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -7253,13 +7189,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7299,7 +7235,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -7310,13 +7246,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7356,7 +7292,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7367,13 +7303,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7413,7 +7349,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7424,13 +7360,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7470,7 +7406,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7481,13 +7417,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7527,7 +7463,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7538,13 +7474,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7584,7 +7520,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7595,13 +7531,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7641,7 +7577,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7652,13 +7588,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7698,7 +7634,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7709,13 +7645,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7755,7 +7691,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -7766,13 +7702,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7804,20 +7740,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7857,7 +7793,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -7868,13 +7804,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7914,7 +7850,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -7925,13 +7861,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -7971,7 +7907,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -7982,13 +7918,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8028,7 +7964,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -8039,13 +7975,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8085,7 +8021,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -8096,13 +8032,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8134,20 +8070,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8179,20 +8115,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8224,20 +8160,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8269,20 +8205,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8314,20 +8250,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8359,20 +8295,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8404,20 +8340,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8449,20 +8385,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8494,20 +8430,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8539,20 +8475,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8584,20 +8520,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8629,20 +8565,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8674,20 +8610,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8719,20 +8655,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8764,20 +8700,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8809,20 +8745,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8854,20 +8790,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8907,7 +8843,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0004"
@@ -8918,13 +8854,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -8964,7 +8900,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -8975,13 +8911,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9021,7 +8957,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -9032,13 +8968,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9078,7 +9014,7 @@
         "state": "available",
         "reason": "joined_l3",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27",
+        "as_of": "2026-11-28",
         "join": {
           "method": "exact",
           "epin": "81622P0003"
@@ -9089,13 +9025,13 @@
           "state": "available",
           "reason": "joined_l3",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9127,20 +9063,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9174,20 +9110,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9221,20 +9157,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9266,20 +9202,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9311,20 +9247,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9356,20 +9292,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9401,20 +9337,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9446,20 +9382,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9491,20 +9427,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9536,20 +9472,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9581,20 +9517,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9626,20 +9562,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9671,20 +9607,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "address_role_unclear",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9718,20 +9654,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "borough_only",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9765,20 +9701,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9810,20 +9746,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "broad_scope",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9855,20 +9791,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9900,20 +9836,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "only_bid_drop_address",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9945,20 +9881,20 @@
         "state": "missing",
         "reason": "pin_not_joined",
         "source": "passport_public_rfx",
-        "as_of": "2026-11-27"
+        "as_of": "2026-11-28"
       },
       "coverage": {
         "category": {
           "state": "missing",
           "reason": "pin_not_joined",
           "source": "passport_public_rfx",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         },
         "work_site": {
           "state": "missing",
           "reason": "no_place_named",
           "source": "city_record_notice_text",
-          "as_of": "2026-11-27"
+          "as_of": "2026-11-28"
         }
       },
       "work_sites": [],
@@ -9983,16 +9919,16 @@
     "join_rule": "A City Record PIN is joined to a PASSPort Public RFx EPIN by exact alphanumeric match, one trailing letter-and-digits suffix stripped, the PIN as a prefix of the EPIN, or the EPIN as a prefix of the PIN. The RFx main commodity is an L3 category only when its label matches a City commodity category exactly after normalizing case and spacing. No PIN, no join, two RFx rows for the same EPIN that disagree, or a label that is not an L3 category is published as category not published, with the reason. Nothing is guessed.",
     "source": "passport_public_rfx",
     "source_url": "https://a0333-passportpublic.nyc.gov/dataJs/rfxData.js",
-    "as_of": "2026-11-27",
-    "observed_at": "2026-11-27T13:33:30.584Z",
+    "as_of": "2026-11-28",
+    "observed_at": "2026-11-28T16:13:28.112Z",
     "catalog_version": "snapshot-2026-11-11-6325fbf06b26",
-    "open_notices": 195,
-    "available": 72,
+    "open_notices": 194,
+    "available": 71,
     "missing": 123,
     "by_reason": {
-      "joined_l3": 72,
-      "no_pin": 5,
-      "pin_not_joined": 117,
+      "joined_l3": 71,
+      "no_pin": 4,
+      "pin_not_joined": 118,
       "joined_unmatched": 1,
       "joined_no_label": 0,
       "ambiguous_epin": 0,
@@ -10001,17 +9937,17 @@
       "rfx_empty": 0
     },
     "by_join_method": {
-      "exact": 72,
+      "exact": 71,
       "pin_strip_suffix": 0,
       "pin_prefix_of_epin": 0,
       "epin_prefix_of_pin": 0
     },
-    "rfx_rows": 12653,
-    "rfx_epins": 11327,
+    "rfx_rows": 12658,
+    "rfx_epins": 11330,
     "rfx_read": {
       "mode": "live",
-      "observed_at": "2026-11-27T13:33:30.584Z",
-      "as_of": "2026-11-27"
+      "observed_at": "2026-11-28T16:13:28.112Z",
+      "as_of": "2026-11-28"
     }
   },
   "work_site_coverage": {
@@ -10022,17 +9958,17 @@
     "rule": "A street address in the notice text is a work site only when the notice presents it as the place of the work: it is in the notice title, it follows a LOCATION label that is not part of a pre-bid meeting block, or its sentence says the work, project or facility is located at it. Addresses where bids are delivered or opened, where documents are collected, where a pre-bid meeting or site tour is held, where an agency office sits, or whose role the sentence does not say are never work sites. A work-site address is geocoded in the City Planning Property Address Directory snapshot, placed on its tax-lot point, and joined to the community district whose boundary contains the point. No vendor field, agency name or bare borough is used. Nothing is guessed. Each placed address is labelled from the typed role that sentence supports: \"Work site\", \"Delivery site\", or \"Property in this solicitation\". When a LOCATION line names a facility the notice title already names, the quote is the street address as written.",
     "source": "city_record_notice_text",
     "source_url": "https://data.cityofnewyork.us/d/dg92-zbpx",
-    "as_of": "2026-11-27",
-    "observed_at": "2026-11-27T13:33:25.585Z",
-    "open_notices": 195,
+    "as_of": "2026-11-28",
+    "observed_at": "2026-11-28T16:13:27.643Z",
+    "open_notices": 194,
     "available": 11,
-    "missing": 184,
+    "missing": 183,
     "by_reason": {
       "resolved": 11,
       "no_place_named": 111,
-      "borough_only": 16,
+      "borough_only": 14,
       "broad_scope": 29,
-      "only_bid_drop_address": 25,
+      "only_bid_drop_address": 26,
       "only_meeting_address": 0,
       "address_role_unclear": 2,
       "address_not_resolved": 1,
@@ -10041,8 +9977,8 @@
       "text_unavailable": 0
     },
     "rejected_addresses_by_class": {
-      "bid_drop": 51,
-      "meeting": 10,
+      "bid_drop": 52,
+      "meeting": 12,
       "agency_office": 3,
       "unclear": 2
     },

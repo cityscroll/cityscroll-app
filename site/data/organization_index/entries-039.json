@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":39,"first_ordinal":65721,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":39,"first_ordinal":65721,"entries":[
 {"s":"HEALTH RESEARCH INC D/B/A NY REGIONAL LABORATORY","n":[["HEALTH RESEARCH. INC. d/b/a NY REGIONAL LABORATORY",1]],"x":{"ocp":{"r":1,"a":49000,"l":"2005-03-21","i":["20050314043"]}}},
 {"s":"HEALTH RESEARCH INC D/B/A WADSWORTH LABS","n":[["HEALTH RESEARCH, INC., d/b/a WADSWORTH LABS",1]],"x":{"ocp":{"r":1,"a":133947,"l":"2007-05-29","i":["20070522018"]}}},
 {"s":"HEALTH RESEARCH INC POSTRETIREMENT HEALTH BENEFITS TRUST","n":[["HEALTH RESEARCH INC POSTRETIREMENT HEALTH BENEFITS TRUST",1]],"x":{"irs":{"r":1,"i":["464309365"],"z":["12204"]}}},

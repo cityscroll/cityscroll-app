@@ -6,7 +6,7 @@
     "publisher": "Office of the New York City Comptroller",
     "landing_page": "https://www.checkbooknyc.com/data-feeds/api",
     "endpoint": "https://www.checkbooknyc.com/api",
-    "pulled_at": "2026-11-27T13:09:25.421Z",
+    "pulled_at": "2026-11-28T15:52:28.007Z",
     "type_of_data": "Contracts",
     "status": "registered",
     "category": "expense",
@@ -30,16 +30,16 @@
     "source_snapshot_token": "not_provided_by_publisher"
   },
   "population": {
-    "api_transaction_rows": 41197,
+    "api_transaction_rows": 41196,
     "by_fiscal_year": {
       "2025": 19766,
       "2026": 15274,
-      "2027": 6157
+      "2027": 6156
     },
     "normalized_unique_contracts": 30154,
-    "duplicate_slices_collapsed": 11043,
+    "duplicate_slices_collapsed": 11042,
     "prime_slices": 30154,
-    "subvendor_slices": 11043,
+    "subvendor_slices": 11042,
     "other_slices": 0,
     "blocked": {
       "missing_contract_id_slices": 0,
@@ -60,9 +60,9 @@
     }
   },
   "checksums": {
-    "page_manifest_sha256": "d3bb2389fc1efc82fbd695b7faefa5b6f2192a8b269eac73101ef0e4994fc372",
-    "normalized_contracts_sha256": "f7152758ea290902a7b73ce71975bd4cd19722466142b99696f7cecc50a8eb40",
-    "committed_graph_slice_sha256": "b402520b41f47723a621f902cadfa9701b71e9e2ca45810675fd5ac67f374761"
+    "page_manifest_sha256": "13f1cfeadb6801d86d5caa32b9873579a44f70e64ba5225866ac800c56380cf2",
+    "normalized_contracts_sha256": "96f451dd867b7c75e9ba8e74cae86deec0ec01dcb0b4dbbeae20264abfbaf13c",
+    "committed_graph_slice_sha256": "5406f039717196903dcada46151cee3e4b5afc79d2dd428e3e92d3609bd3b686"
   },
   "overlap_before_graph_selection": {
     "checkbook_contracts": 30154,
@@ -92,12 +92,12 @@
   },
   "graph_slice": {
     "cap": null,
-    "row_count": 10728,
+    "row_count": 10725,
     "selected_buckets": {
       "passport_and_city_record": 1658,
       "passport_only": 84,
       "city_record_only": 1052,
-      "new_unique": 7934
+      "new_unique": 7931
     },
     "strategy": "City Record Award publication: valid amount (0 < x < $10B) and start/registration within 365 days; no separate row cap",
     "source": "normalized unique contracts from the measured fiscal-year population"

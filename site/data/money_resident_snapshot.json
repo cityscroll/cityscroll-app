@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "delivery_tier": "resident-snapshot",
-  "generated_at": "2026-11-27T13:33:24.957Z",
+  "generated_at": "2026-11-28T16:13:23.657Z",
   "source_vintages": {
-    "default_open": "2026-11-27T13:33:24.957Z",
+    "default_open": "2026-11-28T16:13:23.657Z",
     "domain_observations": "2026-08-03T22:31:10.617Z",
     "award_warehouse": "2026-11-04T04:22:02.123Z"
   },
@@ -54,6 +54,17 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
+      "request_id": "20261106019",
+      "start_date": "2026-11-13T00:00:00.000",
+      "agency_name": "Parks and Recreation",
+      "type_of_notice_description": "Solicitation",
+      "category_description": "Goods",
+      "short_title": "Request for Bids (\u001aRFB\u001a) for the Sale of Food from Mobile Food Units at Various Parks Citywide",
+      "pin": "CWB-2026-A",
+      "due_date": "2026-12-11T15:00:00.000",
+      "selection_method_description": "Competitive Sealed Bids"
+    },
+    {
       "request_id": "20261106026",
       "start_date": "2026-11-13T00:00:00.000",
       "agency_name": "Environmental Protection",
@@ -98,15 +109,15 @@
       "selection_method_description": "Competitive Sealed Bids"
     },
     {
-      "request_id": "20261026031",
-      "start_date": "2026-11-04T00:00:00.000",
+      "request_id": "20261030022",
+      "start_date": "2026-11-06T00:00:00.000",
       "agency_name": "Parks and Recreation",
       "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "BG-426M Brooklyn Street Tree Planting FY27 - CBs 6, 13",
-      "pin": "84627B0014",
-      "due_date": "2026-11-27T10:30:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
+      "category_description": "Services (other than human services)",
+      "short_title": "Request for Expressions of Interest for Broadway Malls, W96 Street Building",
+      "pin": "M96-EX-2026",
+      "due_date": "2026-12-11T14:00:00.000",
+      "selection_method_description": "Request for Information"
     },
     {
       "request_id": "20261027012",
@@ -175,25 +186,15 @@
       "selection_method_description": "Competitive Sealed Proposals"
     },
     {
-      "request_id": "20261020018",
-      "start_date": "2026-10-28T00:00:00.000",
-      "agency_name": "Housing Authority",
-      "type_of_notice_description": "Solicitation",
-      "category_description": "Construction/Construction Services",
-      "short_title": "Bid Extension: SMD-Requirement Contract for Installation of V/C Floor Tile in Apartments- Development Name, Located in Manhattan Neighborhood (MN08), and (MN09), Manhattan.",
-      "due_date": "2026-11-27T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
-    },
-    {
-      "request_id": "20261021030",
-      "start_date": "2026-10-28T00:00:00.000",
-      "agency_name": "Citywide Administrative Services",
+      "request_id": "20261023018",
+      "start_date": "2026-10-29T00:00:00.000",
+      "agency_name": "Dept. of Social Svcs/Human Resources Administration",
       "type_of_notice_description": "Solicitation",
       "category_description": "Services (other than human services)",
-      "short_title": "Bid Extension: 85727B0004-Citywide Moving Services",
-      "pin": "85727B0004",
-      "due_date": "2026-12-03T14:00:00.000",
-      "selection_method_description": "Competitive Sealed Bids"
+      "short_title": "06927P0001-APS Community Guardian Program (CGP) Training Services",
+      "pin": "06927P0001",
+      "due_date": "2026-12-11T14:00:00.000",
+      "selection_method_description": "Competitive Sealed Proposals"
     },
     {
       "request_id": "20261019013",

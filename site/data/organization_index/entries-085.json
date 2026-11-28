@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":85,"first_ordinal":143322,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":85,"first_ordinal":143322,"entries":[
 {"s":"THE NORTH-EASTERN DISTRICT ASSEMBLY OF THE CHURCHES OF CHRIST","n":[["THE NORTH-EASTERN DISTRICT ASSEMBLY OF THE CHURCHES OF CHRIST",1]],"x":{"irs":{"r":1,"i":["133183671"],"z":["11213"]}}},
 {"s":"THE NORTHEAST BLUES SOCIETY","n":[["THE NORTHEAST BLUES SOCIETY INC",1]],"x":{"irs":{"r":1,"i":["311783454"],"z":["12037"]}}},
 {"s":"THE NORTHEAST BRONX DAY CARE CENTERS","n":[["THE NORTHEAST BRONX DAY CARE CENTERS, INC.",1],["The Northeast Bronx Day Care Centers, Inc",1]],"x":{"ocp":{"r":2,"a":3685784,"l":"2004-08-26","i":["20040818002","20031003023"]}}},

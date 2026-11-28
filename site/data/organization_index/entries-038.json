@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":38,"first_ordinal":63993,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":38,"first_ordinal":63993,"entries":[
 {"s":"HAITIAN YOUTH FOUNDATION","n":[["HAITIAN YOUTH FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["991408194"],"z":["11365"]}}},
 {"s":"HAJARA RAHIM","n":[["HAJARA RAHIM",1]],"x":{"dbe":{"r":1,"i":["HAJARA RAHIM"]}}},
 {"s":"HAJI USMAN HAZARABAI MUNDIA FOUNDATION","n":[["HAJI USMAN & HAZARABAI MUNDIA FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["113236306"],"z":["11530"]}}},

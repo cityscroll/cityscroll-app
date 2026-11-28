@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":23,"first_ordinal":38528,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":23,"first_ordinal":38528,"entries":[
 {"s":"CREATE YOUR OWN WORLD NURSERY AND DAYCARE CENTER","n":[["CREATE YOUR OWN WORLD NURSERY AND DAYCARE CENTER INC",1]],"x":{"irs":{"r":1,"i":["810620878"],"z":["10473"]}}},
 {"s":"CREATED BY CARLA","n":[["Created By Carla LLC",1]],"x":{"sbs":{"r":1,"i":["378481"],"z":["10032"],"p":["MBE","WBE"]}}},
 {"s":"CREATED TO WIN YOUTH OUTREACH MINISTRIES","n":[["CREATED TO WIN YOUTH OUTREACH MINISTRIES",1]],"x":{"irs":{"r":1,"i":["061795627"],"z":["14221"]}}},

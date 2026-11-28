@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":25,"first_ordinal":41902,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":25,"first_ordinal":41902,"entries":[
 {"s":"DESIGN INCUBATION","n":[["DESIGN INCUBATION INC",1]],"x":{"irs":{"r":1,"i":["933022586"],"z":["10027"]}}},
 {"s":"DESIGN INDUSTRIES FOUNDATION FIGHTING AIDS","n":[["DESIGN INDUSTRIES FOUNDATION FIGHTING AIDS INC",1]],"x":{"irs":{"r":1,"i":["133224150"],"z":["10019"]}}},
 {"s":"DESIGN INSPECTIONS CONSTRUCTION ENVIRONMENTAL SERVICES","n":[["Design Inspections Construction Environmental Services, LLC",1]],"x":{"sbs":{"r":1,"i":["360287"],"z":["11429"],"p":["WBE"]}}},

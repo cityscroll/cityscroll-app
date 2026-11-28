@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":34,"first_ordinal":57193,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":34,"first_ordinal":57193,"entries":[
 {"s":"FUN AND FUNCTION","n":[["FUN AND FUNCTION LLC",38],["FUN AND FUNCTION",1],["Fun and Function",1]],"x":{"cbr":{"r":30,"a":750000,"l":"2026-04-16","c":30,"i":["CT104020263160955","CT104020263159314","CT104020263162079","CT104020263118594","CT104020263117270"],"m":["Women (Non-Minority)"]},"cbv":{"r":8,"l":"2026-04-16","c":8,"i":["CT104020263160955","CT104020263159314","CT104020263162079","CT104020263118594","CT104020263117270"],"m":["Women (Non-Minority)"]},"dbe":{"r":1,"i":["FUN AND FUNCTION"]},"sbs":{"r":1,"i":["103175"],"z":["19072"],"p":["WBE"]}}},
 {"s":"FUN BRICKS","n":[["FUN BRICKS LLC",3]],"x":{"cbr":{"r":1,"a":25000,"l":"2026-09-16","i":["CT104020273015858"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-09-16","i":["CT104020273015858"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["FUN BRICKS LLC"]}}},
 {"s":"FUN CARE","n":[["FUN CARE INC",1]],"x":{"irs":{"r":1,"i":["333670729"],"z":["11219"]}}},

@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":18,"first_ordinal":30104,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":18,"first_ordinal":30104,"entries":[
 {"s":"CHURCH OF GOD OF COLLEGE AVE","n":[["CHURCH OF GOD OF COLLEGE AVE",1]],"x":{"irs":{"r":1,"i":["134102409"],"z":["10456"]}}},
 {"s":"CHURCH OF GOD OF CROTONA AVENUE","n":[["CHURCH OF GOD OF CROTONA AVENUE INC",1]],"x":{"irs":{"r":1,"i":["900340160"],"z":["10469"]}}},
 {"s":"CHURCH OF GOD OF FORT INDEPENDENCE","n":[["CHURCH OF GOD OF FORT INDEPENDENCE INC",1]],"x":{"irs":{"r":1,"i":["133714761"],"z":["10463"]}}},

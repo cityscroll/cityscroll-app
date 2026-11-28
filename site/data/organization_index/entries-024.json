@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":24,"first_ordinal":40219,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":24,"first_ordinal":40219,"entries":[
 {"s":"DAMAR FOUNDATION","n":[["DAMAR FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["823626851"],"z":["11415"]}}},
 {"s":"DAMARCK SAFETY CONSULTING","n":[["Damarck Safety Consulting Inc.",1]],"x":{"sbs":{"r":1,"i":["325360"],"z":["10465"],"p":["MBE"]}}},
 {"s":"DAMARK","n":[["DAMARK INC",1]],"x":{"irs":{"r":1,"i":["422071791"],"z":["10462"]}}},

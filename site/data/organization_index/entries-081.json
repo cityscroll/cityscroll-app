@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":81,"first_ordinal":136792,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":81,"first_ordinal":136792,"entries":[
 {"s":"STRATEGIC VALUE SOLUTIONS","n":[["STRATEGIC VALUE SOLUTIONS INC",7],["Strategic Value Solutions Inc.",2]],"x":{"ocp":{"r":2,"a":5000000,"l":"2025-08-13","i":["20250807006","20211111101"]},"cbr":{"r":3,"a":1517246.1,"l":"2026-03-20","i":["CTA100220267204636","MMA100220268801509","CTA100220257204771"],"m":["Non-M/WBE"]},"ppt":{"r":2,"a":5000000,"l":"2025-08-06","i":["MMA1-002-20268801509","MMA1-002-20228800510"]},"cbv":{"r":1,"l":"2026-03-20","i":["CTA100220267204636"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["STRATEGIC VALUE SOLUTIONS INC"]}}},
 {"s":"STRATEGY AGENTS","n":[["Strategy Agents, LLC",1]],"x":{"sbs":{"r":1,"i":["357279"],"z":["12485"],"p":["MBE"]}}},
 {"s":"STRATEGY MUSE","n":[["Strategy Muse, Inc.",1]],"x":{"sbs":{"r":1,"i":["389318"],"z":["90042"],"p":["WBE"]}}},

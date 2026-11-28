@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "generated_at": "2026-11-27T13:32:59.450Z",
+  "generated_at": "2026-11-28T16:12:16.978Z",
   "sources": [
     "zap-api-dispositions",
     "zap-api-milestones"
@@ -9,15 +9,15 @@
   "materialization": {
     "method": "zap_published_hearing_sweep_v2",
     "mode": "live",
-    "today": "2026-11-27",
+    "today": "2026-11-28",
     "projects_listed": 234,
     "projects_fetched": 234,
     "projects_failed": 0,
     "unavailable_project_ids": [],
-    "hearings_extracted": 391,
-    "disposition_hearings_extracted": 79,
+    "hearings_extracted": 392,
+    "disposition_hearings_extracted": 80,
     "milestone_hearings_extracted": 312,
-    "disposition_upcoming_count": 5,
+    "disposition_upcoming_count": 6,
     "milestone_upcoming_count": 144,
     "incremental_milestone_count": 144,
     "accepted_milestone_classes": {
@@ -26,7 +26,7 @@
     },
     "published_meeting_dates_evaluated": 823,
     "hearing_shaped_candidates_reviewed": 797,
-    "upcoming_count": 149,
+    "upcoming_count": 150,
     "statuses": [
       "In Public Review",
       "Noticed",
@@ -2000,6 +2000,47 @@
     {
       "schema_version": 1,
       "source": "zap-api-dispositions",
+      "project_id": "2025K0417",
+      "portal_url": "https://zap.planning.nyc.gov/projects/2025K0417",
+      "borough": "Brooklyn",
+      "disposition_id": "ed2920e7-cca7-f111-b8de-001dd8011a01",
+      "disposition_name": "2025K0417_ZM_BK CB6",
+      "representing": "Community Board",
+      "phase_id": "community_board",
+      "hearing_date": "2026-12-03",
+      "hearing_at": "2026-12-03T23:30:00.000Z",
+      "hearing_location_raw": "250 Baltic Str",
+      "venue_address": null,
+      "livestream_url": null,
+      "vote_location": null,
+      "attendance_modes": [],
+      "maps_url": null,
+      "parse_status": "raw_only",
+      "provenance": {
+        "field": "dcp-publichearinglocation",
+        "source": "zap-api-dispositions",
+        "derived": [],
+        "hearing_at": {
+          "field": "dcp-dateofpublichearing",
+          "source": "zap-api-dispositions",
+          "value": "2026-12-03T23:30:00.000Z"
+        },
+        "representing": {
+          "field": "dcp-representing",
+          "source": "zap-api-dispositions",
+          "value": "Community Board"
+        }
+      },
+      "project_name": "GSD - 424 Hoyt Street Rezoning",
+      "public_status": "Noticed",
+      "community_district": "K06",
+      "cc_district": "39",
+      "latitude": null,
+      "longitude": null
+    },
+    {
+      "schema_version": 1,
+      "source": "zap-api-dispositions",
       "project_id": "2026X0180",
       "portal_url": "https://zap.planning.nyc.gov/projects/2026X0180",
       "borough": "Bronx",
@@ -3325,7 +3366,7 @@
       "source": "zap-api-milestones",
       "project_id": "2025K0374",
       "project_name": "2601 86th Street Rezoning",
-      "public_status": "Noticed",
+      "public_status": "In Public Review",
       "portal_url": "https://zap.planning.nyc.gov/projects/2025K0374",
       "borough": "Brooklyn",
       "community_district": "K11",
@@ -5165,7 +5206,7 @@
       "source": "zap-api-milestones",
       "project_id": "2025K0374",
       "project_name": "2601 86th Street Rezoning",
-      "public_status": "Noticed",
+      "public_status": "In Public Review",
       "portal_url": "https://zap.planning.nyc.gov/projects/2025K0374",
       "borough": "Brooklyn",
       "community_district": "K11",

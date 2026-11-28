@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":61,"first_ordinal":102931,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":61,"first_ordinal":102931,"entries":[
 {"s":"NEW YORK COSMOPOLITAN LIONS CLUB","n":[["NEW YORK COSMOPOLITAN LIONS CLUB",1]],"x":{"irs":{"r":1,"i":["133082284"],"z":["10016"]}}},
 {"s":"NEW YORK COUNCIL FOR THE HUMANITIES","n":[["NEW YORK COUNCIL FOR THE HUMANITIES",1]],"x":{"irs":{"r":1,"i":["510152266"],"z":["10006"]}}},
 {"s":"NEW YORK COUNCIL NAVY LEAGUE OF THE UNITED STATES","n":[["NEW YORK COUNCIL NAVY LEAGUE OF THE UNITED STATES INC",1]],"x":{"irs":{"r":1,"i":["822409006"],"z":["10004"]}}},

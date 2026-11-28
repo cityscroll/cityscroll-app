@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":91,"first_ordinal":153316,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":91,"first_ordinal":153316,"entries":[
 {"s":"VIVID MARKETING GROUP","n":[["VIVID MARKETING GROUP LLC",5],["Vivid Marketing Group, LLC",1]],"x":{"ocp":{"r":1,"a":119592,"l":"2023-08-11","i":["20230804120"]},"cbr":{"r":1,"a":9036.4,"l":"2026-09-02","i":["CT112520278802684"],"m":["Black American"]},"ppt":{"r":1,"a":196330.2,"l":"2023-08-04","i":["CT1-125-20248802108"]},"cbv":{"r":1,"l":"2026-09-02","i":["CT112520278802684"],"m":["Black American"]},"dbe":{"r":1,"i":["VIVID MARKETING GROUP LLC"]},"sbs":{"r":1,"i":["17113"],"z":["11413"],"p":["MBE"]}}},
 {"s":"VIVID VOICES","n":[["VIVID VOICES INC",1]],"x":{"irs":{"r":1,"i":["422225424"],"z":["12401"]}}},
 {"s":"VIVO BAYSIDE CORP ( GIETO NICAJ)","n":[["Vivo Bayside Corp. ( Gieto Nicaj)",2]],"x":{"ocp":{"r":2,"a":15400000,"l":"2025-05-09","i":["20250502021","20180402008"]}}},
@@ -438,7 +438,7 @@
 {"s":"W D SMITH SONS CONSTRUCTION","n":[["W&D Smith & Sons Construction, Inc.",1]],"d":[["W&D Smith & Sons Construction, Inc.",1]],"x":{"dol":{"r":2,"v":["dba","name"],"i":["26-64YUH-CR"],"z":["13905"]}}},
 {"s":"W DESIGNE","n":[["W DESIGNE INC",1]],"x":{"dol":{"r":1,"i":["24-64GQY-CR"],"z":["10509"]}}},
 {"s":"W E B DU BOIS MUSEUM FOUNDATION","n":[["W E B DU BOIS MUSEUM FOUNDATION",1]],"x":{"irs":{"r":1,"i":["844028962"],"z":["10031"]}}},
-{"s":"W E BAUM BRONZE TABLET","n":[["W&E BAUM BRONZE TABLET CORP",3],["W&E BAUM BRONZE TABLET CORPORATION",1]],"x":{"cbr":{"r":2,"a":150250,"l":"2025-11-21","i":["CT105620261405896","CT105620251404621"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2025-11-21","i":["CT105620261405896"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["W&E BAUM BRONZE TABLET CORPORATION"]}}},
+{"s":"W E BAUM BRONZE TABLET","n":[["W&E BAUM BRONZE TABLET CORP",2],["W&E BAUM BRONZE TABLET CORPORATION",1]],"x":{"cbr":{"r":2,"a":150250,"l":"2025-11-21","i":["CT105620261405896","CT105620251404621"],"m":["Non-M/WBE"]},"dbe":{"r":1,"i":["W&E BAUM BRONZE TABLET CORPORATION"]}}},
 {"s":"W EISENHART CO-TUW FBO CHARITIES","n":[["W EISENHART CO-TUW FBO CHARITIES",1]],"x":{"irs":{"r":1,"i":["476335712"],"z":["14240"]}}},
 {"s":"W ELISE FOUNDATION","n":[["W ELISE FOUNDATION INC",1]],"x":{"irs":{"r":1,"i":["884308523"],"z":["10603"]}}},
 {"s":"W EMERSON GENTZLER RESIDUARY TRUST","n":[["W EMERSON GENTZLER RESIDUARY TRUST",1]],"x":{"irs":{"r":1,"i":["236958411"],"z":["14240"]}}},

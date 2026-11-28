@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":84,"first_ordinal":141781,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":84,"first_ordinal":141781,"entries":[
 {"s":"THE ENTREPRENEUR S INCUBATOR SPACEE","n":[["The Entrepreneur's Incubator Spacee LLC",3]],"x":{"cbr":{"r":2,"a":2580,"l":"2026-07-16","i":["CT181620271400746","CT181620251414027"],"m":["Non-M/WBE"]},"cbv":{"r":1,"l":"2026-07-16","i":["CT181620271400746"],"m":["Non-M/WBE"]}}},
 {"s":"THE ENVIRONMENTAL SERVICE GROUP (NY)","n":[["The Environmental Service Group (NY), Inc.",1]],"x":{"dol":{"r":1,"i":["25-64VC9-CR"],"z":["14150"]}}},
 {"s":"THE EPILEPSY INSTITUTE","n":[["The Epilepsy Institute",7],["THE EPILEPSY INSTITUTE",2]],"x":{"ocp":{"r":7,"a":1338427,"l":"2021-11-05","c":7,"i":["20211028134","20200409020","20191107019","20190618011","20180917010"]},"ppt":{"r":1,"a":220500,"l":"2021-10-21","i":["CT1-816-20228802598"]},"dbe":{"r":1,"i":["THE EPILEPSY INSTITUTE"]}}},

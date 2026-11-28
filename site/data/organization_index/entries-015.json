@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":15,"first_ordinal":25041,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":15,"first_ordinal":25041,"entries":[
 {"s":"CARP CONSTRUCTION","n":[["Carp Construction Corp.",4]],"x":{"ocp":{"r":4,"a":67811108.07,"l":"2011-09-26","i":["20110920013","20070416019","20070125032","20050817020"]}}},
 {"s":"CARPATHO RUSSIAN AMERICAN CENTER","n":[["CARPATHO RUSSIAN AMERICAN CENTER INC",1]],"x":{"irs":{"r":1,"i":["131700669"],"z":["10704"]}}},
 {"s":"CARPATHO-RUSSIAN ORTHODOX GREEK CATHOLIC CHURCH OF ST MARY","n":[["CARPATHO-RUSSIAN ORTHODOX GREEK CATHOLIC CHURCH OF ST MARY",1]],"x":{"irs":{"r":1,"i":["136135097"],"z":["10701"]}}},

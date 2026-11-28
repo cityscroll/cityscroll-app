@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":7,"first_ordinal":11484,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":7,"first_ordinal":11484,"entries":[
 {"s":"ART OF ENTERTAINMENT MEDIA","n":[["Art Of Entertainment Media Inc",1]],"x":{"sbs":{"r":1,"i":["369005"],"z":["11216"],"p":["MBE"]}}},
 {"s":"ART OF EXPRESSION","n":[["ART OF EXPRESSION INC",1]],"x":{"irs":{"r":1,"i":["462375429"],"z":["10001"]}}},
 {"s":"ART OF FACES","n":[["Art of Faces LLC",1]],"x":{"sbs":{"r":1,"i":["370825"],"z":["11201"],"p":["MBE","WBE"]}}},

@@ -1,7 +1,7 @@
 {
   "schema": "cityscroll.procurement_digest_snapshot.v1",
-  "generated_at": "2026-11-27T13:09:25.421Z",
-  "row_count": 8088,
+  "generated_at": "2026-11-28T15:52:28.007Z",
+  "row_count": 8085,
   "rows": [
     {
       "procurement_id": "procurement:contract:8000000863",
@@ -155416,41 +155416,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT105620261405896",
-      "digest_id": "procurement:contract:CT105620261405896",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT105620261405896",
-      "short_title": "POLICE DISTINGUISHED SERVICE MEDALS-NYPD_PERSONNEL BUREAU",
-      "agency_name": "Police Department",
-      "vendor_name": "W&E BAUM BRONZE TABLET CORP",
-      "contract_amount": 50250,
-      "start_date": "2025-11-21",
-      "pin": null,
-      "contract_id": "CT105620261405896",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT105620261405896:checkbook_contracts:contract:registered:CT105620261405896:W&E BAUM BRONZE TABLET CORP:prime-vendor:2025-11-21:registered",
-          "state": "registered",
-          "effective_at": "2025-11-21",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT105620261405896:W&E BAUM BRONZE TABLET CORP:prime-vendor:2025-11-21",
-          "source_receipt_ref": "materialized:contract:registered:CT105620261405896:W&E BAUM BRONZE TABLET CORP:prime-vendor:2025-11-21",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT105620261405896"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT105620261405911",
       "digest_id": "procurement:contract:CT105620261405911",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT105620261405911",
@@ -210237,41 +210202,6 @@
       "type_of_notice_description": null
     },
     {
-      "procurement_id": "procurement:contract:CT184620261405671",
-      "digest_id": "procurement:contract:CT184620261405671",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT184620261405671",
-      "short_title": "Replacement Boat Yard Trailer for The World's Fair Marina",
-      "agency_name": "Department of Parks and Recreation",
-      "vendor_name": "NICK ROBERTIS MARINE",
-      "contract_amount": 73375,
-      "start_date": "2025-11-20",
-      "pin": null,
-      "contract_id": "CT184620261405671",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT184620261405671:checkbook_contracts:contract:registered:CT184620261405671:NICK ROBERTIS MARINE:prime-vendor:2025-11-20:registered",
-          "state": "registered",
-          "effective_at": "2025-11-20",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT184620261405671:NICK ROBERTIS MARINE:prime-vendor:2025-11-20",
-          "source_receipt_ref": "materialized:contract:registered:CT184620261405671:NICK ROBERTIS MARINE:prime-vendor:2025-11-20",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT184620261405671"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
       "procurement_id": "procurement:contract:CT184620261406586",
       "digest_id": "procurement:contract:CT184620261406586",
       "canonical_href": "/procurements/procurement%3Acontract%3ACT184620261406586",
@@ -240757,41 +240687,6 @@
           "source_receipt_ref": "materialized:contract:registered:CT185020268802788:NEW YORK SOCIETY FOR THE RELIEF OF RUPTURED & CRIPPLED MAINT:prime-vendor:2025-12-01",
           "publisher_state": "registered",
           "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185020268802788"
-        }
-      ],
-      "type_of_notice_description": null
-    },
-    {
-      "procurement_id": "procurement:contract:CT185020268803090",
-      "digest_id": "procurement:contract:CT185020268803090",
-      "canonical_href": "/procurements/procurement%3Acontract%3ACT185020268803090",
-      "short_title": "Citywide Emergency Reconstruction of Sewers",
-      "agency_name": "Department of Design and Construction",
-      "vendor_name": "JLJ IV ENTERPRISES INC",
-      "contract_amount": 25000000,
-      "start_date": "2025-10-28",
-      "pin": "85026B0004001",
-      "contract_id": "CT185020268803090",
-      "procurement_stages": [
-        "registered"
-      ],
-      "primary_stage": "registered",
-      "source_systems": [
-        "checkbook_contracts"
-      ],
-      "process_states": [
-        "registered"
-      ],
-      "process_events": [
-        {
-          "event_id": "procurement:contract:CT185020268803090:checkbook_contracts:contract:registered:CT185020268803090:JLJ IV ENTERPRISES INC:prime-vendor:2025-10-28:registered",
-          "state": "registered",
-          "effective_at": "2025-10-28",
-          "source_system": "checkbook_contracts",
-          "source_observation_ref": "checkbook_contracts:contract:registered:CT185020268803090:JLJ IV ENTERPRISES INC:prime-vendor:2025-10-28",
-          "source_receipt_ref": "materialized:contract:registered:CT185020268803090:JLJ IV ENTERPRISES INC:prime-vendor:2025-10-28",
-          "publisher_state": "registered",
-          "evidence_href": "https://www.checkbooknyc.com/smart_search/citywide?search_term=CT185020268803090"
         }
       ],
       "type_of_notice_description": null

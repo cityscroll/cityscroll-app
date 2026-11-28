@@ -1,5 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":47,"first_ordinal":79129,"entries":[
-{"s":"K D KANOPY","n":[["K D KANOPY",26]],"x":{"cbr":{"r":17,"a":140426,"l":"2026-10-16","c":17,"i":["CT184620278803436","CT184620278803124","CT184620278802595","CT184620268807211","CT184620268806845"],"m":["Non-M/WBE"]},"cbv":{"r":9,"l":"2026-10-16","c":9,"i":["CT184620278803436","CT184620278803124","CT184620278802595","CT184620268807211","CT184620268806845"],"m":["Non-M/WBE"]}}},
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":47,"first_ordinal":79130,"entries":[
 {"s":"K D ORMINSKI EXCAVATING","n":[["K.D. ORMINSKI EXCAVATING INC.",1]],"x":{"dol":{"r":1,"i":["26-69B9X-CR"],"z":["12020"]}}},
 {"s":"K DYMOND INDUSTRIES","n":[["K. Dymond Industries, Inc.",1]],"x":{"dol":{"r":1,"i":["25-64V3I-CR"],"z":["11763"]}}},
 {"s":"K E B PEST CONTROL","n":[["K.E.B. Pest Control, LLC",3]],"x":{"sbs":{"r":1,"i":["2299"],"z":["10710"],"p":["MBE"]},"dol":{"r":1,"i":["25-649LL-CR"],"z":["10710"]},"sca":{"r":1,"i":["K.E.B. PEST CONTROL, LLC"],"z":["10710"]}}},
@@ -1855,5 +1854,9 @@
 {"s":"KIDS AGAINST CANCER","n":[["KIDS AGAINST CANCER INC",1]],"x":{"irs":{"r":1,"i":["133582506"],"z":["10314"]}}},
 {"s":"KIDS AGAINST POLLUTION","n":[["KIDS AGAINST POLLUTION",1]],"x":{"irs":{"r":1,"i":["521752455"],"z":["13309"]}}},
 {"s":"KIDS ALTERNATIVE LEARNING INTERVENTION SERVICES","n":[["Kids Alternative Learning & Intervention Services, LLC",1]],"x":{"sbs":{"r":1,"i":["13736"],"z":["11021"],"p":["MBE","WBE"]}}},
-{"s":"KIDS AND YOUTH FUN-LEARN HAVEN","n":[["KIDS AND YOUTH FUN-LEARN HAVEN",1]],"x":{"irs":{"r":1,"i":["991807591"],"z":["13037"]}}}
+{"s":"KIDS AND YOUTH FUN-LEARN HAVEN","n":[["KIDS AND YOUTH FUN-LEARN HAVEN",1]],"x":{"irs":{"r":1,"i":["991807591"],"z":["13037"]}}},
+{"s":"KIDS ARE ANGELS","n":[["KIDS ARE ANGELS INC",1]],"x":{"irs":{"r":1,"i":["394559508"],"z":["11218"]}}},
+{"s":"KIDS ARE FANTASTIC","n":[["KIDS ARE FANTASTIC",1]],"x":{"irs":{"r":1,"i":["991526177"],"z":["12543"]}}},
+{"s":"KIDS AT PROMISE","n":[["KIDS AT PROMISE INC",1]],"x":{"irs":{"r":1,"i":["161577421"],"z":["14048"]}}},
+{"s":"KIDS BASE THE LITTLE SCHOOL","n":[["KIDS BASE & THE LITTLE SCHOOL",1]],"x":{"irs":{"r":1,"i":["133908589"],"z":["10583"]}}}
 ]}

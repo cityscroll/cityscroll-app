@@ -1,4 +1,4 @@
-{"schema":"cityscroll.organization_index.entries.v1","generation":"ad78952d3549942d","shard":10,"first_ordinal":16548,"entries":[
+{"schema":"cityscroll.organization_index.entries.v1","generation":"cc6dfd2ea3f4178d","shard":10,"first_ordinal":16548,"entries":[
 {"s":"BENTON VOLUNTEER FIRE DEPARTMENT","n":[["BENTON VOLUNTEER FIRE DEPARTMENT INC",1]],"x":{"irs":{"r":1,"i":["200410406"],"z":["14527"]}}},
 {"s":"BENZAK FOUNDATION","n":[["BENZAK FOUNDATION",1]],"x":{"irs":{"r":1,"i":["203872608"],"z":["10580"]}}},
 {"s":"BENZAKEN FOUNDATION","n":[["BENZAKEN FOUNDATION",1]],"x":{"irs":{"r":1,"i":["264437333"],"z":["11557"]}}},
